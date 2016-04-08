@@ -13,12 +13,16 @@ function init(){
 }
 
 function cycle(){
-	context.fillStyle = "rgb(200, 0, 0)";
+	context.fillStyle = getRandomColor();
 	var x = Math.random()*width;
 	var y = Math.random()*height;
 	x -= x%pixelWidth;
 	y -= y%pixelWidth;
 	context.fillRect(x, y, pixelWidth, pixelWidth);
+}
+
+function getRandomColor(){
+	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
 }
 
 init();
