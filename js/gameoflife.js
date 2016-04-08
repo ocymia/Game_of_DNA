@@ -1,3 +1,4 @@
+/*jslint browser:true */
 "use strict";
 var canvas, context, height, width, pixelWidth, field;
 
