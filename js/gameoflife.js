@@ -19,6 +19,7 @@ function init(){
 
 function cycle(){
 	console.time("cycle duration");
+	
 	// calculate the lifecycle
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
@@ -35,7 +36,7 @@ function cycle(){
 			}
 		}
 	}
-
+	
 	console.timeEnd("cycle duration");
 }
 
