@@ -31,7 +31,7 @@ function cycle(){
 	context.fillStyle = getRandomColor();
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			if (true){
+			if (Math.random()>0.5){
 				context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 			}
 		}
