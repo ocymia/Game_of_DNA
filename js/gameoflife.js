@@ -1,5 +1,5 @@
 "use strict";
-var canvas, context, height, width, pixelWidth;
+var canvas, context, height, width, pixelWidth, field;
 
 function init(){
 	pixelWidth = 5;
@@ -8,17 +8,34 @@ function init(){
 	width = document.body.clientWidth;
 	canvas.height = height;
 	canvas.width = width;
+	field = [];
+	for (var i=0; i<(width-width%pixelWidth)/pixelWidth; i++){
+		field[i]=new Array((height-height%pixelWidth)/pixelWidth);
+	}
 	context = canvas.getContext("2d");
-	setInterval(cycle, 100);
+	setInterval(cycle, 1000);
 }
 
 function cycle(){
+	console.time("cycle duration");
+	// calculate the lifecycle
+	for (var i=0; i<field.length; i++){
+		for (var j=0; j<field[i].length; j++){
+			// do stuff
+		}
+	}
+	
+	// draw the field
 	context.fillStyle = getRandomColor();
-	var x = Math.random()*width;
-	var y = Math.random()*height;
-	x -= x%pixelWidth;
-	y -= y%pixelWidth;
-	context.fillRect(x, y, pixelWidth, pixelWidth);
+	for (var i=0; i<field.length; i++){
+		for (var j=0; j<field[i].length; j++){
+			if (true){
+				context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
+			}
+		}
+	}
+
+	console.timeEnd("cycle duration");
 }
 
 function getRandomColor(){
