@@ -40,7 +40,6 @@ function paint(event){
 }
 
 function startCycle(){
-	canvas.removeEventListener("mousedown", paint);
 	this.hidden = true;
 	setInterval(cycle, 1000);
 }
