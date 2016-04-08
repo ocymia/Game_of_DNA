@@ -1,6 +1,7 @@
 /*jslint browser:true */
 "use strict";
 var canvas, context, height, width, pixelWidth, field;
+var currentCycleCounter=0;
 
 function init(){
 	pixelWidth = 5;
@@ -18,7 +19,8 @@ function init(){
 			field[i][j] = {
 				red: (j%2===0&&i%2===0)?255:0,
 				green: 0,
-				blue: 0
+				blue: 0,
+				cycleCounter: 0
 			};
 		}
 	}
@@ -32,7 +34,7 @@ function cycle(){
 	// calculate the lifecycle
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			
+			//JERRY IS DOING THIS
 		}
 	}
 	
@@ -45,6 +47,8 @@ function cycle(){
 		}
 	}
 	
+	currentCycleCounter++;
+
 	console.timeEnd("cycle duration");
 }
 
