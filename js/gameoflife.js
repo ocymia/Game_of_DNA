@@ -12,16 +12,30 @@ function init(){
 	field = new Array((width-width%pixelWidth)/pixelWidth);
 	for (var i=0; i<field.length; i++){
 		field[i]=new Array((height-height%pixelWidth)/pixelWidth);
-	}
-	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			field[i][j] = {
-				color: getRandomColor(),
-				shown: false
-			};
+			field[i][j] = null;
 		}
 	}
 	context = canvas.getContext("2d");
+	canvas.addEventListener("mousemove", paint);
+	document.getElementById("start").addEventListener("click", startCycle);
+}
+
+function paint(event){
+	if (event.buttons === 1){// if the left mouse button is pressed
+		field[(event.clientX-event.clientX%pixelWidth)/pixelWidth][(event.clientY-event.clientY%pixelWidth)/pixelWidth] = {
+			red: 255,
+			green: 0,
+			blue: 0
+		};
+		context.fillStyle = "rgb(255,0,0)";
+		context.fillRect(event.clientX-event.clientX%pixelWidth, event.clientY-event.clientY%pixelWidth, pixelWidth, pixelWidth);
+	}
+}
+
+function startCycle(){
+	canvas.removeEventListener("mousedown", paint);
+	this.hidden = true;
 	setInterval(cycle, 1000);
 }
 
@@ -31,27 +45,27 @@ function cycle(){
 	// calculate the lifecycle
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			field[i][j].shown = Math.random()>0.9;// replace with actual condition
+			if (field[i][j]){
+				// do stuff
+			}
 		}
 	}
 	
 	// draw the field
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			if (field[i][j].shown){
-				context.fillStyle = field[i][j].color;
-			}else{
-				context.fillStyle = "rgb(255,255,255)";
+			if (field[i][j]){
+				context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
+				context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 			}
-			context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 		}
 	}
 	
 	console.timeEnd("cycle duration");
 }
 
-function getRandomColor(){
-	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-}
+//function getRandomColor(){
+//	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
+//}
 
 init();
