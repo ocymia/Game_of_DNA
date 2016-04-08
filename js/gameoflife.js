@@ -16,8 +16,9 @@ function init(){
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
 			field[i][j] = {
-				color: getRandomColor(),
-				shown: false
+				red: (j%2===0&&i%2===0)?255:0,
+				green: 0,
+				blue: 0
 			};
 		}
 	}
@@ -31,18 +32,15 @@ function cycle(){
 	// calculate the lifecycle
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			field[i][j].shown = Math.random()>0.9;// replace with actual condition
+			
 		}
 	}
 	
 	// draw the field
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
-			if (field[i][j].shown){
-				context.fillStyle = field[i][j].color;
-			}else{
-				context.fillStyle = "rgb(255,255,255)";
-			}
+			context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
 			context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 		}
 	}
