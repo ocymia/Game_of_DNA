@@ -494,7 +494,8 @@ function checkForPartnerCell (thisX,thisY){
 				rest2=strongestGreen;
 			}
 			//create child (target X & Y , strain color , strain value)
-			createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
+			createChild(thisX-1,thisY,strainColor,mainStrain,rest1,rest2);
+			//createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
 
 		}// else no partners left or top
 	}
