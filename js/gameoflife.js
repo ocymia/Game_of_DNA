@@ -118,6 +118,8 @@ function cycle(){
 			//counting alive cells
 			if (field[i][j].exists) {
 				aliveCounter++;
+				checkForPartnerCell(i,j);
+				//killing cells that are nearly dead
 				if (field[i][j].red<10 && field[i][j].green<10 && field[i][j].blue<10){
 					field[i][j].red=0;
 					field[i][j].green=0;
@@ -415,5 +417,109 @@ function mutate(x,y){
 			field[x][y].green = field[x][y].green + mutateValue;
 		}
 
+	}
+}
+
+function checkForPartnerCell (thisX,thisY){
+	if (thisX == 0 || thisY == 0){
+		//cell is on some north or west border, its to cold to reproduce here ;)
+	}else{
+		//get these rgb (of the cell that will mate with partner cell
+		var tR=field[thisX][thisY].red;
+		var tG=field[thisX][thisY].green;
+		var tB=field[thisX][thisY].blue;
+
+		if(field[thisX-1][thisY].exists){
+			//left has partner
+			//get partner rgb
+			var pR=field[thisX-1][thisY].red;
+			var pG=field[thisX-1][thisY].green;
+			var pB=field[thisX-1][thisY].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+			//create child (target X & Y , strain color , strain value)
+			createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
+		}else if (field[thisX][thisY-1].exists){
+			//partner top
+			//get partner rgb
+			var pR=field[thisX][thisY-1].red;
+			var pG=field[thisX][thisY-1].green;
+			var pB=field[thisX][thisY-1].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+			//create child (target X & Y , strain color , strain value)
+			createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
+
+		}// else no partners left or top
+	}
+}
+
+function createChild (x,y,c,v,r1,r2){
+	//strongest strain gets stronger on the expense of weaker ones
+	switch (c){
+		case "red":
+			field[x][y].red=v+50;
+			field[x][y].green=r1-25;
+			field[x][y].blue=r2-25;
+			field[x][y].exists=true;
+			break;
+		case "green":
+			field[x][y].red=r1-25;
+			field[x][y].green=v+50;
+			field[x][y].blue=r2-25;
+			field[x][y].exists=true;
+			break;
+		case "blue":
+			field[x][y].red=r1-25;
+			field[x][y].green=r1-25;
+			field[x][y].blue=v+50;
+			field[x][y].exists=true;
+			break;
 	}
 }
