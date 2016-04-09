@@ -38,6 +38,7 @@ function init(){
 
 
 function generateRandomPoints(numberOfPoints){
+	numberOfPoints = Math.min(numberOfPoints, field.length*field[0].length);
 	var i=1;
 	while (i<=numberOfPoints/3){
 		var randomX = Math.floor(Math.random()*field.length);
