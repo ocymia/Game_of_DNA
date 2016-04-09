@@ -92,7 +92,7 @@ function startCycle(){
 }
 
 function cycle(){
-	console.time("cycle duration");
+	//console.time("cycle duration");
 
 	// calculate the lifecycle
 	/*for (var i=0; i<field.length; i++){
@@ -188,10 +188,10 @@ function updateTable(){
 					//stay
 					case 5:
 					//this is still done to update and age cell
-					/*	if (updateCellsNewHome(x,y,thisR,thisG,thisB,inc)) {
-					 //killCurrentCell (x,y);
-					 }
-					 break;*/
+						mutate(x,y);
+						field[x][y].cycleCounter=inc;
+						console.log("mutated");
+						break;
 					//right
 					case 6:
 						if (updateCellsNewHome(x+1,y,thisR,thisG,thisB,inc)) {
@@ -267,7 +267,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
-		console.log("cant move");
+		//console.log("cant move");
 		return false;
 	}
 }
@@ -284,10 +284,10 @@ function killCurrentCell (targetX,targetY){
 
 //check if target is out of the visible field
 function notOutOfBoundsAndNotAlive (x,y,thisR,thisG,thisB,inc){
-	console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
+	//console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
 	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
-		console.log("out of bounds");
+		//console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
@@ -308,7 +308,7 @@ function notAlive (x,y,thisR,thisG,thisB,inc){
 		//TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
 		fusion (x,y,thisR,thisG,thisB,inc);
 		//
-		console.log("target cell is alive - should mutate");
+		//console.log("target cell is alive - should mutate");
 		return false;
 	}
 }
@@ -351,4 +351,14 @@ function procreate (targetX,targetY,thisR,thisG,thisB,inc){
 	//create new cell with properties of both
 
 	//kill old cell
+}
+
+function mutate(x,y){
+	function randomIntFromInterval(min,max) {
+    	return Math.floor(Math.random()*(max-min+1)+min);
+	}
+
+	field[x][y].red = field[x][y].red + randomIntFromInterval(1,10)-5;
+	field[x][y].green = field[x][y].green + randomIntFromInterval(1,10)-5;
+	field[x][y].blue = field[x][y].blue + randomIntFromInterval(1,10)-5;
 }
