@@ -12,36 +12,34 @@
     </script>
 </head>
 <body id="body">
-<!-- Page Wrapper -->
-<div id="page-wrapper">
+    <!-- Page Wrapper -->
+    <div id="page-wrapper">
+			<header id="header" class="alt">
+				<h1>Game Of D.N.A.</h1>
+			</header>
+			<div id="content">
+				<form id="options" action="gameoflife.html" target="_blank">
+					Random Cells:<br/>
+					<input type="number" name="rndpoints" value="500"/><br>
+					Cells Size:<br/>
 
-    <!-- Header -->
-    <header id="header" class="alt">
-        <h1>Game Of D.N.A.</h1>
-    </header>
+                <input type="range" name="pixsize" min="1" max="50" value="3" step="1" onchange="showValue(this.value)" />
+                <span id="range">3</span><br>
 
-    <div id="content">
-        <form id="options" action="gameoflife.html" target="_blank">
-            Random Cells:<br>
-            <input type="number" name="rndpoints" value="500"><br>
-            Cells Size:<br>
+                <select name="selscript" >
+                    <option type="number" value="4">Claude</option>
+                    <option type="number" value="1">Jerry</option>
+                    <option type="number" value="3">Manu</option>
+                    <option type="number" value="2">Max</option>
+                </select>
 
-            <input type="range" name="pixsize" min="1" max="50" value="3" step="1" onchange="showValue(this.value)" />
-            <span id="range">3</span><br>
-
-            <select name="selscript" >
-                <option type="number" value="4">Claude</option>
-                <option type="number" value="1">Jerry</option>
-                <option type="number" value="3">Manu</option>
-                <option type="number" value="2">Max</option>
-            </select>
-
-            <button>...GO...</button>
-        </form>
+                <button>...GO...</button>
+            </form>
+        </div>
+        <div id="footer">
+            <p>By Fatal Error</p>
+        </div>
     </div>
-    <div id="footer">
-        <p>By Fatal Error</p>
-    </div>
-</div>
 </body>
+
 </html>
