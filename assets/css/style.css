@@ -1,12 +1,19 @@
-html, body{
+html{
     height: 100%;
     width: 100%;
     margin: 0px;
     overflow: hidden;
+    background: black url(../images/bg.png) no-repeat right top;
 }
-canvas{
-    background-color: black;
+
+body{
+
 }
+
+#body{
+
+}
+
 #start{
     position: absolute;
     top: 0px;
@@ -19,7 +26,7 @@ canvas{
 }
 
 #content{
-
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 #footer{
