@@ -196,7 +196,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 	if (age===null){age=1;}
 	//age simulated a cell aging. looses pigment
 	//check if target is located in the visible field AND is not occupied by another cell
-	if (notOutOfBounds(targetX,targetY)&&notAlive(targetX,targetY)){
+	if (notOutOfBoundsAndNotAlive(targetX,targetY)){
 		field[targetX][targetY].red=thisR-age;
 		field[targetX][targetY].green=thisG-age;
 		field[targetX][targetY].blue=thisB-age;
@@ -221,20 +221,24 @@ function killCurrentCell (targetX,targetY){
 }
 
 //check if target is out of the visible field
-function notOutOfBounds (x,y){
+function notOutOfBoundsAndNotAlive (x,y){
+	console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
 	if (x<0 || y<0 || x>field.length || y>field[0].length){
 		//target cell is out the bounds
 		console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
-		return 1;
+		if (notAlive(x,y)){
+			return 1;
+		}
+		return 0;
 	}
 }
 
 //checks if target is not alive
 function notAlive (x,y){
-	if (field[x][y].exists!==true){
+	if (!field[x][y].exists){
 		//its true, target is not alive
 		return true;
 	}else{
