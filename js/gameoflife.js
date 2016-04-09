@@ -224,6 +224,7 @@ function killCurrentCell (targetX,targetY){
 function notOutOfBounds (x,y){
 	if (x<0 || y<0 || x>field.length || y>field[0].length){
 		//target cell is out the bounds
+		console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
@@ -233,13 +234,14 @@ function notOutOfBounds (x,y){
 
 //checks if target is not alive
 function notAlive (x,y){
-	if (field[x][y].exists){
+	if (field[x][y].exists!==true){
 		//its true, target is not alive
 		return true;
 	}else{
 		//its false target is alive
 		//TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
 		//
+		console.log("target cell is alive - should mutate");
 		return false;
 	}
 }
