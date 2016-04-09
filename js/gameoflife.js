@@ -89,18 +89,10 @@ function startCycle(){
 
 function cycle(){
 	console.time("cycle duration");
-	
-	// calculate the lifecycle
-	/*for (var i=0; i<field.length; i++){
-		for (var j=0; j<field[i].length; j++){
-			//JERRY IS DOING THIS
-			field[i][j].green+=10;
-		}
-	}*/
 
 	updateTable();
 
-	//clear field before next draw
+	// clear the field before next draw
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	// draw the field
 	for (var i=0; i<field.length; i++){
