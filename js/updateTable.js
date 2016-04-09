@@ -12,7 +12,7 @@ function updateTable(){
                     var thisG =    field[x][y].green;
                     var thisB =    field[x][y].blue;
                     //inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
-                    var inc = cycleCounter+1;
+                    var inc = currentCycleCounter+1;
                     //determin direction in wich to move
                     var d = randDirection();
                     //depending on direction do the move accordingly
