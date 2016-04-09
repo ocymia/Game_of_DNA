@@ -20,7 +20,8 @@ function init(){
 				red: (j%2===0&&i%2===0)?255:0,
 				green: 0,
 				blue: 0,
-				cycleCounter: 0
+				cycleCounter: 0,
+				exists:true
 			};
 		}
 	}

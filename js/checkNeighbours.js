@@ -1,0 +1,3 @@
+function checkNeighbours(x,y){
+	
+}
