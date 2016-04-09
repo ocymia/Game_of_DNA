@@ -26,8 +26,48 @@ function init(){
 		}
 	}
 	context = canvas.getContext("2d");
+	generateRandomPoints(20);
 	canvas.addEventListener("mousemove", paint);
 	document.getElementById("start").addEventListener("click", startCycle);
+}
+
+function generateRandomPoints(numberOfPointsPerColour){
+	var i=1;
+	while (i<=numberOfPointsPerColour){
+		var randomX = Math.floor(Math.random()*field.length);
+		var randomY = Math.floor(Math.random()*field[0].length);
+		if (!field[randomX][randomY].exists){
+			field[randomX][randomY].red = 255;
+			field[randomX][randomY].exists = true;
+			context.fillStyle = "rgb(255,0,0)";
+			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
+			i++;
+		}
+	}
+	i=1;
+	while (i<=numberOfPointsPerColour){
+		var randomX = Math.floor(Math.random()*field.length);
+		var randomY = Math.floor(Math.random()*field[0].length);
+		if (!field[randomX][randomY].exists){
+			field[randomX][randomY].green = 255;
+			field[randomX][randomY].exists = true;
+			context.fillStyle = "rgb(0,255,0)";
+			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
+			i++;
+		}
+	}
+	i=1;
+	while (i<=numberOfPointsPerColour){
+		var randomX = Math.floor(Math.random()*field.length);
+		var randomY = Math.floor(Math.random()*field[0].length);
+		if (!field[randomX][randomY].exists){
+			field[randomX][randomY].blue = 255;
+			field[randomX][randomY].exists = true;
+			context.fillStyle = "rgb(0,0,255)";
+			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
+			i++;
+		}
+	}
 }
 
 function paint(event){
