@@ -1,7 +1,7 @@
 
 
 /* moving all cells and checking for trample instances  */
-function updateTable(tableX,tableY){
+function updateTable(){
     /* Check all table */
     for (var x=0;x<field.length;x++){
         for (var y=0;y<field[0].length;y++) {
