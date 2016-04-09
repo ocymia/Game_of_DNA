@@ -13,8 +13,6 @@ function init(){
 	field = new Array((width-width%pixelWidth)/pixelWidth);
 	for (var i=0; i<field.length; i++){
 		field[i]=new Array((height-height%pixelWidth)/pixelWidth);
-	}
-	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
 			field[i][j] = {
 				red: (j%2===0&&i%2===0)?255:0,
@@ -26,6 +24,24 @@ function init(){
 		}
 	}
 	context = canvas.getContext("2d");
+	canvas.addEventListener("mousemove", paint);
+	document.getElementById("start").addEventListener("click", startCycle);
+}
+
+function paint(event){
+	if (event.buttons === 1){// if the left mouse button is pressed
+		field[(event.clientX-event.clientX%pixelWidth)/pixelWidth][(event.clientY-event.clientY%pixelWidth)/pixelWidth] = {
+			red: 255,
+			green: 0,
+			blue: 0
+		};
+		context.fillStyle = "rgb(255,0,0)";
+		context.fillRect(event.clientX-event.clientX%pixelWidth, event.clientY-event.clientY%pixelWidth, pixelWidth, pixelWidth);
+	}
+}
+
+function startCycle(){
+	this.hidden = true;
 	setInterval(cycle, 1000);
 }
 
@@ -53,8 +69,8 @@ function cycle(){
 	console.timeEnd("cycle duration");
 }
 
-function getRandomColor(){
-	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-}
+//function getRandomColor(){
+//	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
+//}
 
 init();
