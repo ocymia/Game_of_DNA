@@ -3,18 +3,18 @@
 /* moving all cells and checking for trample instances  */
 function updateTable(tableX,tableY){
     /* Check all table */
-    for (x=0;x<tableX;x++){
-        for (y=0;y<tableY;y++) {
+    for (var x=0;x<field.length;x++){
+        for (var y=0;y<field[0].length;y++) {
                 // if current alive (exists) AND counter is equivalent to current turn then move the cell
                 if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
                     //temp store values
-                    thisR =    field[x][y].red;
-                    thisG =    field[x][y].green;
-                    thisB =    field[x][y].blue;
+                    var thisR =    field[x][y].red;
+                    var thisG =    field[x][y].green;
+                    var thisB =    field[x][y].blue;
                     //inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
-                    inc = cycleCounter+1;
+                    var inc = cycleCounter+1;
                     //determin direction in wich to move
-                    d = randDirection();
+                    var d = randDirection();
                     //depending on direction do the move accordingly
                     switch (d){
                         //down left
@@ -97,7 +97,7 @@ random 1 to 9 for directions
 123 LEFT DOWN RIGHT
 */
 function randDirection (){
-    d = Math.floor((Math.random() * 9)+1);
+    var d = Math.floor((Math.random() * 9)+1);
     return d;
 }
 
@@ -142,7 +142,7 @@ function notOutOfBounds (x,y){
 
 //checks if target is not alive
 function notAlive (x,y){
-    if (field[x][y].exists=true){
+    if (field[x][y].exists){
         //its true, target is not alive
         return true;
     }else{
