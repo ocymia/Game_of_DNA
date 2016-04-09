@@ -44,8 +44,7 @@ function paint(event){
 
 function startCycle(){
 	this.hidden = true;
-	cycle();
-	//setInterval(cycle, 5000);
+	setInterval(cycle, 1000);
 }
 
 function cycle(){
