@@ -6,12 +6,24 @@ html{
     background: black url(../images/bg.png) no-repeat right top;
 }
 
-#options{
+h1{
+	text-align: center;
+}
+
+.options{
     border-radius: 5px;
     padding: 10px;
     width: 250px;
     margin: auto;
     background-color: rgb(188, 201, 252);
+}
+
+.options+.options{
+	margin-top: 10px;
+}
+
+h3, p{
+	margin: 0.5em 0px;
 }
 
 #header{
@@ -28,9 +40,13 @@ html{
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.4);
     padding: 50px;
+	margin-top: 10px;
 }
 
 #footer{
     border-radius: 10px;
     background-color: rgba(46, 45, 255, 0.80);
+	color: white;
+	text-align: right;
+	padding-right: 5px;
 }
