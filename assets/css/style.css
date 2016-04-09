@@ -1,0 +1,27 @@
+html, body{
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    overflow: hidden;
+}
+canvas{
+    background-color: black;
+}
+#start{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin-left: 48%;
+}
+
+#header{
+
+}
+
+#content{
+
+}
+
+#footer{
+
+}
