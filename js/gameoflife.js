@@ -20,7 +20,7 @@ function init(){
 				green: 255,
 				blue: 255,
 				cycleCounter: 0,
-				exists: true
+				exists: false
 			};
 		}
 	}
@@ -35,6 +35,7 @@ function paint(event){
 		currentField.red = 255;
 		currentField.green = 0;
 		currentField.blue = 0;
+		currentField.exists = true;
 		context.fillStyle = "rgb(255,0,0)";
 		context.fillRect(event.clientX-event.clientX%pixelWidth, event.clientY-event.clientY%pixelWidth, pixelWidth, pixelWidth);
 	}
