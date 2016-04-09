@@ -28,7 +28,7 @@ function init(){
 		}
 	}
 	context = canvas.getContext("2d");
-	generateRandomPoints(20);
+	generateRandomPoints(1000);
 	canvas.addEventListener("mousedown", paint);
 	canvas.addEventListener("mousemove", paint);
 	document.getElementById("start").addEventListener("click", startCycle);
@@ -191,7 +191,7 @@ function updateTable(){
 					//this is still done to update and age cell
 						mutate(x,y);
 						field[x][y].cycleCounter=inc;
-						console.log("mutated");
+						//console.log("mutated");
 						break;
 					//right
 					case 6:
@@ -362,7 +362,7 @@ function mutate(x,y){
 	var cR =field[x][y].red;
 	var cG =field[x][y].green;
 	var cB =field[x][y].blue;
-	var mutateValue = randomIntFromInterval(1,5);
+	var mutateValue = randomIntFromInterval(1,20);
 	if (cR >= cB && cR >= cG){
 		// Red is strongest
 		field[x][y].red = field[x][y].red - mutateValue;
