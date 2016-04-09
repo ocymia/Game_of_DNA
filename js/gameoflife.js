@@ -358,8 +358,42 @@ function mutate(x,y){
 	function randomIntFromInterval(min,max) {
     	return Math.floor(Math.random()*(max-min+1)+min);
 	}
+	//current values
+	var cR =field[x][y].red;
+	var cG =field[x][y].green;
+	var cB =field[x][y].blue;
+	var mutateValue = randomIntFromInterval(1,5);
+	if (cR >= cB && cR >= cG){
+		// Red is strongest
+		field[x][y].red = field[x][y].red - mutateValue;
+		if (cB>=cG){
+			//if blue is stronger then green then give to blue
+			//second strongest gene wins over weakest
+			field[x][y].blue = field[x][y].blue + mutateValue;
+		} else {
+			//green is second
+			field[x][y].green = field[x][y].green + mutateValue;
+		}
+	} else if(cG >= cR && cG >= cB){
+		// Green is strongest
+		field[x][y].green = field[x][y].green - mutateValue;
+		if (cB>=cG){
+			//blue is second
+			field[x][y].blue = field[x][y].blue + mutateValue;
+		} else {
+			//red is second
+			field[x][y].red = field[x][y].red + mutateValue;
+		}
+	} else {
+		// Blue ist strongest
+		field[x][y].blue = field[x][y].blue - mutateValue;
+		if (cR>=cG){
+			//red is second
+			field[x][y].red = field[x][y].red + mutateValue;
+		} else {
+			//green is second
+			field[x][y].green = field[x][y].green + mutateValue;
+		}
 
-	field[x][y].red = field[x][y].red + randomIntFromInterval(1,10)-5;
-	field[x][y].green = field[x][y].green + randomIntFromInterval(1,10)-5;
-	field[x][y].blue = field[x][y].blue + randomIntFromInterval(1,10)-5;
+	}
 }
