@@ -1,3 +1,4 @@
+/*MAX'S PLAYGROUND****************************************************/
 /*jslint browser:true */
 
 "use strict";
