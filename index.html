@@ -4,11 +4,6 @@
 		<meta charset="utf-8"/>
 		<title>FATAL ERROR</title>
 		<link rel="stylesheet" href="assets/css/style.css"/>
-		<script>
-			function showValue(newValue){
-				document.getElementById("range").innerHTML=newValue;
-			}
-		</script>
 	</head>
 	<body id="body">
 		<div id="page-wrapper">
@@ -17,12 +12,12 @@
 			</header>
 			<div id="content">
 				<form id="options" action="gameoflife.html" target="_blank">
-					Random Cells:<br>
-					<input type="number" name="rndpoints" value="500"><br>
-					Cells Size:<br>
+					Random Cells:<br/>
+					<input type="number" name="rndpoints" value="500"/><br>
+					Cells Size:<br/>
 
-					<input type="range" name="pixsize" min="1" max="50" value="2" step="1" oninput="showValue(this.value)"/>
-					<span id="range">2</span><br>
+					<input type="range" id="rangeinput" name="pixsize" min="1" max="50" value="5" oninput="showValue(this.value)"/>
+					<output id="range">5</output><br/>
 
 					<select name="selscript" >
 						<option value="4">Claude</option>
@@ -33,7 +28,14 @@
 
 					<button>...GO...</button>
 				</form>
+		
 			</div>
 		</div>
+		<script>
+			function showValue(newValue){
+				document.getElementById("range").innerHTML=newValue;
+			}
+			showValue(document.getElementById("rangeinput").value);
+		</script>
 	</body>
 </html>
