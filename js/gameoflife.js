@@ -28,16 +28,17 @@ function init(){
 		}
 	}
 	context = canvas.getContext("2d");
-	generateRandomPoints(20);
+	var numberOfPoitsToGenerate = +location.search.substring(location.search.indexOf("=")+1);
+	generateRandomPoints(numberOfPoitsToGenerate);
 	canvas.addEventListener("mousedown", paint);
 	canvas.addEventListener("mousemove", paint);
 	document.getElementById("start").addEventListener("click", startCycle);
 }
 
 
-function generateRandomPoints(numberOfPointsPerColour){
+function generateRandomPoints(numberOfPoints){
 	var i=1;
-	while (i<=numberOfPointsPerColour){
+	while (i<=numberOfPoints/3){
 		var randomX = Math.floor(Math.random()*field.length);
 		var randomY = Math.floor(Math.random()*field[0].length);
 		if (!field[randomX][randomY].exists){
@@ -48,8 +49,7 @@ function generateRandomPoints(numberOfPointsPerColour){
 			i++;
 		}
 	}
-	i=1;
-	while (i<=numberOfPointsPerColour){
+	while (i<=2*numberOfPoints/3){
 		var randomX = Math.floor(Math.random()*field.length);
 		var randomY = Math.floor(Math.random()*field[0].length);
 		if (!field[randomX][randomY].exists){
@@ -60,8 +60,7 @@ function generateRandomPoints(numberOfPointsPerColour){
 			i++;
 		}
 	}
-	i=1;
-	while (i<=numberOfPointsPerColour){
+	while (i<=numberOfPoints){
 		var randomX = Math.floor(Math.random()*field.length);
 		var randomY = Math.floor(Math.random()*field[0].length);
 		if (!field[randomX][randomY].exists){
