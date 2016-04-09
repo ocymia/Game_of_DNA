@@ -8,6 +8,12 @@ var tempY;
 var aliveCounter;
 var theInterval;
 
+/**PARAMETERS*/
+//value given to main strain when child is created
+var strainGeneticsPowerMajor = 25;
+//value taken from secondary strains when child is created
+var strainGeneticsPowerMinor = 10;
+
 function init(){
 	var parameters = location.search;
 	pixelWidth = +parameters.substring(parameters.indexOf("pixsize=")+"pixsize=".length, parameters.indexOf("&", parameters.indexOf("pixsize=")));
@@ -95,7 +101,7 @@ function startCycle(){
 }
 
 function cycle(){
-	console.time("cycle duration");
+	//console.time("cycle duration");
 
 	// calculate the lifecycle
 	/*for (var i=0; i<field.length; i++){
@@ -125,7 +131,7 @@ function cycle(){
 					field[i][j].green=0;
 					field[i][j].blue=0;
 					field[i][j].exists=false;
-					console.log("black cell killed");
+					//console.log("black cell killed");
 				}
 			}
 			//if values are to low then kill it
@@ -136,10 +142,10 @@ function cycle(){
 	}
 	//stop if no cells alive
 	if (aliveCounter===0){clearInterval(theInterval);console.log("FINISH");}
-	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
+	//console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
-	console.timeEnd("cycle duration");
+	//console.timeEnd("cycle duration");
 }
 
 //function getRandomColor(){
@@ -210,7 +216,7 @@ function updateTable(){
 						break;
 					//stay
 					case 5:
-					//this is still done to update and age cell
+						//this is still done to update and age cell
 						mutate(x,y);
 						field[x][y].cycleCounter=inc;
 						//console.log("mutated");
@@ -298,9 +304,9 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
-	field[targetX][targetY].red=0;
-	field[targetX][targetY].green=0;
-	field[targetX][targetY].blue=0;
+	// field[targetX][targetY].red=0;
+	// field[targetX][targetY].green=0;
+	// field[targetX][targetY].blue=0;
 	field[targetX][targetY].cycleCounter=null;
 	field[targetX][targetY].exists=false;
 }
@@ -378,7 +384,7 @@ function procreate (targetX,targetY,thisR,thisG,thisB,inc){
 
 function mutate(x,y){
 	function randomIntFromInterval(min,max) {
-    	return Math.floor(Math.random()*(max-min+1)+min);
+		return Math.floor(Math.random()*(max-min+1)+min);
 	}
 	//current values
 	var cR =field[x][y].red;
@@ -494,7 +500,9 @@ function checkForPartnerCell (thisX,thisY){
 				rest2=strongestGreen;
 			}
 			//create child (target X & Y , strain color , strain value)
-			createChild(thisX-1,thisY,strainColor,mainStrain,rest1,rest2);
+			if (thisX<field.length-1 && thisY<field[0].length-1){
+				createChild(thisX+1,thisY+1,strainColor,mainStrain,rest1,rest2);
+			} else createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
 			//createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
 
 		}// else no partners left or top
@@ -503,24 +511,31 @@ function checkForPartnerCell (thisX,thisY){
 
 function createChild (x,y,c,v,r1,r2){
 	//strongest strain gets stronger on the expense of weaker ones
-	switch (c){
-		case "red":
-			field[x][y].red=v+50;
-			field[x][y].green=r1-25;
-			field[x][y].blue=r2-25;
-			field[x][y].exists=true;
-			break;
-		case "green":
-			field[x][y].red=r1-25;
-			field[x][y].green=v+50;
-			field[x][y].blue=r2-25;
-			field[x][y].exists=true;
-			break;
-		case "blue":
-			field[x][y].red=r1-25;
-			field[x][y].green=r1-25;
-			field[x][y].blue=v+50;
-			field[x][y].exists=true;
-			break;
+
+	//coinflip
+	var test = Math.floor((Math.random() * 10) + 1);
+	if (test>7) {
+		switch (c) {
+			case "red":
+
+				field[x][y].red = v + strainGeneticsPowerMajor;
+				field[x][y].green = r1 - strainGeneticsPowerMinor;
+				field[x][y].blue = r2 - strainGeneticsPowerMinor;
+				field[x][y].exists = true;
+				break;
+			case "green":
+				field[x][y].red = r1 - strainGeneticsPowerMinor;
+				field[x][y].green = v + strainGeneticsPowerMajor;
+				field[x][y].blue = r2 - strainGeneticsPowerMinor;
+				field[x][y].exists = true;
+				break;
+			case "blue":
+				field[x][y].red = r1 - strainGeneticsPowerMinor;
+				field[x][y].green = r2 - strainGeneticsPowerMinor;
+				field[x][y].blue = v + strainGeneticsPowerMajor;
+				field[x][y].exists = true;
+				break;
+		}
 	}
+
 }
