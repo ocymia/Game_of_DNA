@@ -10,7 +10,7 @@ var theInterval;
 
 function init(){
 	var parameters = location.search;
-	pixelWidth = +parameters.substring(parameters.indexOf("pixsize=")+"pixsize=".length);
+	pixelWidth = +parameters.substring(parameters.indexOf("pixsize=")+"pixsize=".length, parameters.indexOf("&", parameters.indexOf("pixsize=")));
 	age = 1;
 	canvas = document.querySelector("canvas");
 	height = document.body.clientHeight;
