@@ -1,5 +1,5 @@
 /*jslint browser:true */
-
+//Jerry's playground
 "use strict";
 var canvas, context, height, width, pixelWidth, field, age;
 var currentCycleCounter=0;
