@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title>Game Of D.N.A.</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <script type="text/javascript">
-        function showValue(newValue)
-        {
-            document.getElementById("range").innerHTML=newValue;
-        }
-    </script>
-</head>
-<body id="body">
-    <!-- Page Wrapper -->
-    <div id="page-wrapper">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Game Of D.N.A.</title>
+		<link rel="stylesheet" href="assets/css/style.css"/>
+		<script>
+			function showValue(newValue){
+				document.getElementById("range").innerHTML=newValue;
+			}
+		</script>
+	</head>
+	<body id="body">
+		<div id="page-wrapper">
 			<header id="header" class="alt">
 				<h1>Game Of D.N.A.</h1>
 			</header>
@@ -23,23 +21,22 @@
 					<input type="number" name="rndpoints" value="500"/><br>
 					Cells Size:<br/>
 
-                <input type="range" name="pixsize" min="1" max="50" value="3" step="1" onchange="showValue(this.value)" />
-                <span id="range">3</span><br>
+					<input type="range" name="pixsize" min="1" max="50" value="3" step="1" onchange="showValue(this.value)" />
+					<span id="range">3</span><br/>
 
-                <select name="selscript" >
-                    <option type="number" value="4">Claude</option>
-                    <option type="number" value="1">Jerry</option>
-                    <option type="number" value="3">Manu</option>
-                    <option type="number" value="2">Max</option>
-                </select>
+					<select name="selscript">
+						<option value="4">Claude</option>
+						<option value="1">Jerry</option>
+						<option value="3">Manu</option>
+						<option value="2">Max</option>
+					</select>
 
-                <button>...GO...</button>
-            </form>
-        </div>
-        <div id="footer">
-            <p>By Fatal Error</p>
-        </div>
-    </div>
-</body>
-
+					<button>...GO...</button>
+				</form>
+			</div>
+			<footer id="footer">
+				<p>By Fatal Error</p>
+			</footer>
+		</div>
+	</body>
 </html>

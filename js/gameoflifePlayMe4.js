@@ -98,14 +98,6 @@ function startCycle(){
 function cycle(){
 	console.time("cycle duration");
 
-	// calculate the lifecycle
-	/*for (var i=0; i<field.length; i++){
-	 for (var j=0; j<field[i].length; j++){
-	 //JERRY IS DOING THIS
-	 field[i][j].green+=10;
-	 }
-	 }*/
-
 	updateTable();
 
 	//clear field before next draw
@@ -126,7 +118,6 @@ function cycle(){
 					field[i][j].green=0;
 					field[i][j].blue=0;
 					field[i][j].exists=false;
-					console.log("black cell killed");
 				}
 			}
 			//if values are to low then kill it
@@ -136,16 +127,11 @@ function cycle(){
 		}
 	}
 	//stop if no cells alive
-	if (aliveCounter===0){clearInterval(theInterval);console.log("FINISH");}
-	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
+	if (aliveCounter===0){clearInterval(theInterval);}
 	currentCycleCounter++;
 
 	console.timeEnd("cycle duration");
 }
-
-//function getRandomColor(){
-//	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-//}
 
 init();
 
@@ -155,16 +141,13 @@ init();
 /* moving all cells and checking for trample instances  */
 function updateTable(){
 	/* Check all table */
-	//console.log("update table started");
 	for (var x=0;x<field.length;x++){
 		for (var y=0;y<field[0].length;y++) {
 			tempX=x;
 			tempY=y;
-			//console.log("checking x"+x+" y "+y);
 			// if current alive (exists) AND counter is equivalent to current turn then move the cell
 			if (field [x][y].exists===true && field[x][y].cycleCounter===currentCycleCounter) {
 				//temp store values
-				//console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
 				var thisR =    field[x][y].red;
 				var thisG =    field[x][y].green;
 				var thisB =    field[x][y].blue;
@@ -212,7 +195,6 @@ function updateTable(){
 					//this is still done to update and age cell
 						mutate(x,y);
 						field[x][y].cycleCounter=inc;
-						//console.log("mutated");
 						break;
 					//right
 					case 6:
@@ -286,10 +268,8 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		field[targetX][targetY].blue=thisB-age;
 		field[targetX][targetY].cycleCounter=inc;
 		field[targetX][targetY].exists=true;
-		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
-		//console.log("cant move");
 		return false;
 	}
 }
@@ -306,10 +286,8 @@ function killCurrentCell (targetX,targetY){
 
 //check if target is out of the visible field
 function notOutOfBoundsAndNotAlive (x,y,thisR,thisG,thisB,inc){
-	//console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
 	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
-		//console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
@@ -329,8 +307,6 @@ function notAlive (x,y,thisR,thisG,thisB,inc){
 		//its false target is alive
 		//TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
 		fusion (x,y,thisR,thisG,thisB,inc);
-		//
-		//console.log("target cell is alive - should mutate");
 		return false;
 	}
 }
