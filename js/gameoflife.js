@@ -73,7 +73,6 @@ function generateRandomPoints(numberOfPoints){
 	}
 }
 
-
 function paint(event){
 	if (event.buttons === 1){// if the left mouse button is pressed
 		var currentField = field[(event.clientX-event.clientX%pixelWidth)/pixelWidth][(event.clientY-event.clientY%pixelWidth)/pixelWidth];
@@ -92,7 +91,7 @@ function startCycle(){
 }
 
 function cycle(){
-	//console.time("cycle duration");
+	console.time("cycle duration");
 
 	// calculate the lifecycle
 	/*for (var i=0; i<field.length; i++){
