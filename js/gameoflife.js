@@ -29,6 +29,7 @@ function init(){
 	}
 	context = canvas.getContext("2d");
 	generateRandomPoints(20);
+	canvas.addEventListener("mousedown", paint);
 	canvas.addEventListener("mousemove", paint);
 	document.getElementById("start").addEventListener("click", startCycle);
 }
