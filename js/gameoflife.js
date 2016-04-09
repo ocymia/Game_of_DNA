@@ -111,24 +111,33 @@ function updateTable(){
 						//set target cell to current values and increment cycleCounter so it will not be targeted again this iteration
 						if (updateCellsNewHome(x-1,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							//even if move can not be dne we need to increment the counter to keep cell movable next turn
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//down
 					case 2:
 						if (updateCellsNewHome(x,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//down right
 					case 3:
 						if (updateCellsNewHome(x+1,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//left
 					case 4:
 						if (updateCellsNewHome(x-1,y,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//stay
@@ -142,24 +151,32 @@ function updateTable(){
 					case 6:
 						if (updateCellsNewHome(x+1,y,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//up left
 					case 7:
 						if (updateCellsNewHome(x-1,y-1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//up
 					case 8:
 						if (updateCellsNewHome(x,y-1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//up right
 					case 9:
 						if (updateCellsNewHome(x+1,y-1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					default:
