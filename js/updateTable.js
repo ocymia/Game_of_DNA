@@ -8,7 +8,7 @@ function updateCanvas(tableX,tableY){
 
 
                 // if
-                if (field [x][y].exists==true && field[x][y].cycleCounter==currentCycleCounter) {
+                if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
                     //there is a cell alive here and it has not moved
                     thisR =    field[x][y].red;
                     thisG =    field[x][y].green;
@@ -98,7 +98,7 @@ function checkTurn (x,y) {
     if (field[x][y][4] == thisTurn) {
         //cell has not moved, so set its turn to next (so it wont be moved again)
         field[x][y][4]++;
-        return 1
+        return 1;
     } else {
         //cell has already moved so return 0 and if wont be executed
         return 0;
@@ -108,7 +108,7 @@ function checkTurn (x,y) {
 //update cell that current cell moved to
 function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
     //TODO remove the if below when merged
-    if (age==null){age=1;}
+    if (age===null){age=1;}
     //age simulated a cell aging. looses pigment
 
     //check if target is out of bounds
