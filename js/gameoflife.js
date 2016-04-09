@@ -6,6 +6,7 @@ var currentCycleCounter=0;
 var tempX;
 var tempY;
 var aliveCounter;
+var theInterval;
 
 function init(){
 	var parameters = location.search;
@@ -90,7 +91,7 @@ function paint(event){
 
 function startCycle(){
 	this.hidden = true;
-	setInterval(cycle, 100);
+	theInterval=setInterval(cycle, 100);
 }
 
 function cycle(){
@@ -115,12 +116,24 @@ function cycle(){
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
 			//counting alive cells
-			if (field[i][j].exists) {aliveCounter++;}
+			if (field[i][j].exists) {
+				aliveCounter++;
+				if (field[i][j].red<10 && field[i][j].green<10 && field[i][j].blue<10){
+					field[i][j].red=0;
+					field[i][j].green=0;
+					field[i][j].blue=0;
+					field[i][j].exists=false;
+					console.log("black cell killed");
+				}
+			}
+			//if values are to low then kill it
 
 			context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
 			context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 		}
 	}
+	//stop if no cells alive
+	if (aliveCounter===0){clearInterval(theInterval);console.log("FINISH");}
 	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
