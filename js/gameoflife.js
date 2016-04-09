@@ -8,7 +8,8 @@ var tempY;
 var aliveCounter;
 
 function init(){
-	//pixelWidth = 20;
+	var parameters = location.search;
+	pixelWidth = +parameters.substring(parameters.indexOf("pixsize=")+"pixsize=".length);
 	age = 1;
 	canvas = document.querySelector("canvas");
 	height = document.body.clientHeight;
@@ -29,7 +30,7 @@ function init(){
 		}
 	}
 	context = canvas.getContext("2d");
-	var numberOfPoitsToGenerate = +location.search.substring(location.search.indexOf("=")+1);
+	var numberOfPoitsToGenerate = +parameters.substring(parameters.indexOf("rndpoints=")+"rndpoints=".length, parameters.indexOf("&"));
 	generateRandomPoints(numberOfPoitsToGenerate);
 	canvas.addEventListener("mousedown", paint);
 	canvas.addEventListener("mousemove", paint);
