@@ -223,7 +223,7 @@ function killCurrentCell (targetX,targetY){
 //check if target is out of the visible field
 function notOutOfBoundsAndNotAlive (x,y){
 	console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
-	if (x<0 || y<0 || x>field.length || y>field[0].length){
+	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
 		console.log("out of bounds");
 		return 0;
