@@ -48,18 +48,7 @@ function init(){
 function generateRandomPoints(numberOfPoints){
 	numberOfPoints = Math.min(numberOfPoints, field.length*field[0].length);
 	var i=1;
-	/*while (i<=numberOfPoints/3){
-		var randomX = Math.floor(Math.random()*field.length);
-		var randomY = Math.floor(Math.random()*field[0].length);
-		if (!field[randomX][randomY].exists){
-			field[randomX][randomY].red = 255;
-			field[randomX][randomY].exists = true;
-			context.fillStyle = "rgb(255,0,0)";
-			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
-			i++;
-		}
-	}*/
-	while (i<=2*numberOfPoints/3){
+	while (i<=numberOfPoints/2){
 		var randomX = Math.floor(Math.random()*field.length);
 		var randomY = Math.floor(Math.random()*field[0].length);
 		if (!field[randomX][randomY].exists){
