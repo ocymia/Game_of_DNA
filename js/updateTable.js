@@ -1,21 +1,21 @@
 
 
 /* moving all cells and checking for trample instances  */
-function updateCanvas(tableX,tableY){
+function updateTable(tableX,tableY){
     /* Check all table */
     for (x=0;x<tableX;x++){
         for (y=0;y<tableY;y++) {
-
-
-                // if
+                // if current alive (exists) AND counter is equivalent to current turn then move the cell
                 if (field [x][y].exists==true && field[x][y].cycleCounter==currentCycleCounter) {
-                    //there is a cell alive here and it has not moved
+                    //temp store values
                     thisR =    field[x][y].red;
                     thisG =    field[x][y].green;
                     thisB =    field[x][y].blue;
-                    //inc is the cycleCounterValue of the next iteration
+                    //inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
                     inc = cycleCounter+1;
+                    //determin direction in wich to move
                     d = randDirection();
+                    //depending on direction do the move accordingly
                     switch (d){
                         //down left
                         case 1:
@@ -121,8 +121,19 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
-    field[targetX][targetY].red=null;
-    field[targetX][targetY].green=null;
-    field[targetX][targetY].blue=null;
+    field[targetX][targetY].red=0;
+    field[targetX][targetY].green=0;
+    field[targetX][targetY].blue=0;
     field[targetX][targetY].cycleCounter=null;
+    field[targetX][targetY].exists=false;
+}
+
+function outOfBounds (x,y){
+    if (x<0 || y<0 || x>field.length || y>field[0].length){
+        //target cell is out the bounds
+        return 0;
+    } else {
+        //target cell is in the bounds
+        return 1;
+    }
 }
