@@ -44,7 +44,7 @@ function paint(event){
 
 function startCycle(){
 	this.hidden = true;
-	setInterval(cycle, 1000);
+	setInterval(cycle, 100);
 }
 
 function cycle(){
@@ -103,7 +103,7 @@ function updateTable(){
 				var inc = currentCycleCounter+1;
 				//determin direction in wich to move
 				var d = randDirection();
-				console.log("cell x"+x+" y"+y);
+				//console.log("cell x"+x+" y"+y);
 				//depending on direction do the move accordingly
 				switch (d){
 					//down left
@@ -134,10 +134,10 @@ function updateTable(){
 					//stay
 					case 5:
 						//this is still done to update and age cell
-						if (updateCellsNewHome(x,y,thisR,thisG,thisB,inc)) {
-							killCurrentCell (x,y);
+					/*	if (updateCellsNewHome(x,y,thisR,thisG,thisB,inc)) {
+							//killCurrentCell (x,y);
 						}
-						break;
+						break;*/
 					//right
 					case 6:
 						if (updateCellsNewHome(x+1,y,thisR,thisG,thisB,inc)) {
@@ -201,7 +201,8 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		field[targetX][targetY].green=thisG-age;
 		field[targetX][targetY].blue=thisB-age;
 		field[targetX][targetY].cycleCounter=inc;
-		console.log("moving to x"+targetX+" y"+targetY);
+		field[targetX][targetY].exists=true;
+		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
 		console.log("cant move");
