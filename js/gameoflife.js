@@ -111,24 +111,33 @@ function updateTable(){
 						//set target cell to current values and increment cycleCounter so it will not be targeted again this iteration
 						if (updateCellsNewHome(x-1,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							//even if move can not be dne we need to increment the counter to keep cell movable next turn
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//down
 					case 2:
 						if (updateCellsNewHome(x,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//down right
 					case 3:
 						if (updateCellsNewHome(x+1,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//left
 					case 4:
 						if (updateCellsNewHome(x-1,y,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//stay
@@ -142,24 +151,32 @@ function updateTable(){
 					case 6:
 						if (updateCellsNewHome(x+1,y,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//up left
 					case 7:
 						if (updateCellsNewHome(x-1,y-1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//up
 					case 8:
 						if (updateCellsNewHome(x,y-1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					//up right
 					case 9:
 						if (updateCellsNewHome(x+1,y-1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
+						} else {
+							field[x][y].cycleCounter=inc;
 						}
 						break;
 					default:
@@ -196,7 +213,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 	if (age===null){age=1;}
 	//age simulated a cell aging. looses pigment
 	//check if target is located in the visible field AND is not occupied by another cell
-	if (notOutOfBounds(targetX,targetY)&&notAlive(targetX,targetY)){
+	if (notOutOfBoundsAndNotAlive(targetX,targetY)){
 		field[targetX][targetY].red=thisR-age;
 		field[targetX][targetY].green=thisG-age;
 		field[targetX][targetY].blue=thisB-age;
@@ -221,20 +238,24 @@ function killCurrentCell (targetX,targetY){
 }
 
 //check if target is out of the visible field
-function notOutOfBounds (x,y){
-	if (x<0 || y<0 || x>field.length || y>field[0].length){
+function notOutOfBoundsAndNotAlive (x,y){
+	console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
+	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
 		console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
-		return 1;
+		if (notAlive(x,y)){
+			return 1;
+		}
+		return 0;
 	}
 }
 
 //checks if target is not alive
 function notAlive (x,y){
-	if (field[x][y].exists!==true){
+	if (!field[x][y].exists){
 		//its true, target is not alive
 		return true;
 	}else{
