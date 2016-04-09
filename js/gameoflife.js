@@ -1,4 +1,5 @@
 /*jslint browser:true */
+
 "use strict";
 var canvas, context, height, width, pixelWidth, field, age;
 var currentCycleCounter=0;
@@ -16,9 +17,9 @@ function init(){
 		field[i]=new Array((height-height%pixelWidth)/pixelWidth);
 		for (var j=0; j<field[i].length; j++){
 			field[i][j] = {
-				red: 255,
-				green: 255,
-				blue: 255,
+				red: 0,
+				green: 0,
+				blue: 0,
 				cycleCounter: 0,
 				exists: false
 			};
@@ -50,15 +51,18 @@ function cycle(){
 	console.time("cycle duration");
 	
 	// calculate the lifecycle
-	for (var i=0; i<field.length; i++){
+	/*for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
 			//JERRY IS DOING THIS
 			field[i][j].green+=10;
 		}
-	}
-	
-	// draw the field
+	}*/
+
+	updateTable();
+
+	//clear field before next draw
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	// draw the field
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
 			context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
