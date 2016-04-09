@@ -9,6 +9,9 @@ var tempY;
 var aliveCounter;
 var theInterval;
 
+
+
+
 function init(){
 	var parameters = location.search;
 	pixelWidth = +parameters.substring(parameters.indexOf("pixsize=")+"pixsize=".length, parameters.indexOf("&", parameters.indexOf("pixsize=")));
@@ -169,7 +172,7 @@ function updateTable(){
 				var thisG =    field[x][y].green;
 				var thisB =    field[x][y].blue;
 				//inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
-				var inc = currentCycleCounter+1;
+				var inc = currentCycleCounter+5;
 				//determin direction in wich to move
 				var d = randDirection();
 				//console.log("cell x"+x+" y"+y);
@@ -296,12 +299,15 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 	}
 }
 
+var backR = field[x+1][y+1].red;
+var backG = field[x+1][y+1].green;
+var backB = field[x+1][y+1].blue;
 
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
-	field[targetX][targetY].red=0;
-	field[targetX][targetY].green=0;
-	field[targetX][targetY].blue=0;
+	field[targetX][targetY].red=backR;
+	field[targetX][targetY].green=backG;
+	field[targetX][targetY].blue=backB;
 	field[targetX][targetY].cycleCounter=null;
 	field[targetX][targetY].exists=false;
 }
@@ -519,7 +525,7 @@ function createChild (x,y,c,v,r1,r2){
 			break;
 		case "blue":
 			field[x][y].red=r1-25;
-			field[x][y].green=r1-25;
+			field[x][y].green=r2-25;
 			field[x][y].blue=v+50;
 			field[x][y].exists=true;
 			break;
