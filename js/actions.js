@@ -30,8 +30,9 @@ function checkNeighbours(x,y){
 }
 
 function procreate(x,y){
-	var neighbour = checkNeighbours(x,y);
-	if (neighbour) {
-		
-	}
+	
+}
+
+function mutate(x,y){
+
 }
