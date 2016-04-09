@@ -511,31 +511,25 @@ function checkForPartnerCell (thisX,thisY){
 
 function createChild (x,y,c,v,r1,r2){
 	//strongest strain gets stronger on the expense of weaker ones
+	switch (c){
+		case "red":
 
-	//coinflip
-	var test = Math.floor((Math.random() * 10) + 1);
-	if (test>7) {
-		switch (c) {
-			case "red":
-
-				field[x][y].red = v + strainGeneticsPowerMajor;
-				field[x][y].green = r1 - strainGeneticsPowerMinor;
-				field[x][y].blue = r2 - strainGeneticsPowerMinor;
-				field[x][y].exists = true;
-				break;
-			case "green":
-				field[x][y].red = r1 - strainGeneticsPowerMinor;
-				field[x][y].green = v + strainGeneticsPowerMajor;
-				field[x][y].blue = r2 - strainGeneticsPowerMinor;
-				field[x][y].exists = true;
-				break;
-			case "blue":
-				field[x][y].red = r1 - strainGeneticsPowerMinor;
-				field[x][y].green = r2 - strainGeneticsPowerMinor;
-				field[x][y].blue = v + strainGeneticsPowerMajor;
-				field[x][y].exists = true;
-				break;
-		}
+			field[x][y].red=v+strainGeneticsPowerMajor;
+			field[x][y].green=r1-strainGeneticsPowerMinor;
+			field[x][y].blue=r2-strainGeneticsPowerMinor;
+			field[x][y].exists=true;
+			break;
+		case "green":
+			field[x][y].red=r1-strainGeneticsPowerMinor;
+			field[x][y].green=v+strainGeneticsPowerMajor;
+			field[x][y].blue=r2-strainGeneticsPowerMinor;
+			field[x][y].exists=true;
+			break;
+		case "blue":
+			field[x][y].red=r1-strainGeneticsPowerMinor;
+			field[x][y].green=r2-strainGeneticsPowerMinor;
+			field[x][y].blue=v+strainGeneticsPowerMajor;
+			field[x][y].exists=true;
+			break;
 	}
-
 }
