@@ -88,7 +88,7 @@ init();
 /* moving all cells and checking for trample instances  */
 function updateTable(){
 	/* Check all table */
-	console.log("update table started");
+	//console.log("update table started");
 	for (var x=0;x<field.length;x++){
 		for (var y=0;y<field[0].length;y++) {
 
@@ -96,7 +96,7 @@ function updateTable(){
 			// if current alive (exists) AND counter is equivalent to current turn then move the cell
 			if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
 				//temp store values
-				console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
+				//console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
 				var thisR =    field[x][y].red;
 				var thisG =    field[x][y].green;
 				var thisB =    field[x][y].blue;
@@ -104,6 +104,7 @@ function updateTable(){
 				var inc = currentCycleCounter+1;
 				//determin direction in wich to move
 				var d = randDirection();
+				console.log("cell x"+x+" y"+y);
 				//depending on direction do the move accordingly
 				switch (d){
 					//down left
@@ -195,15 +196,16 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 	//TODO remove the if below when merged
 	if (age===null){age=1;}
 	//age simulated a cell aging. looses pigment
-
 	//check if target is located in the visible field AND is not occupied by another cell
 	if (notOutOfBounds(targetX,targetY)&&notAlive(targetX,targetY)){
 		field[targetX][targetY].red=thisR-age;
 		field[targetX][targetY].green=thisG-age;
 		field[targetX][targetY].blue=thisB-age;
 		field[targetX][targetY].cycleCounter=inc;
+		console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
+		console.log("cant move");
 		return false;
 	}
 }
