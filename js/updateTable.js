@@ -3,11 +3,15 @@
 /* moving all cells and checking for trample instances  */
 function updateTable(){
     /* Check all table */
+    console.log("update table started");
     for (var x=0;x<field.length;x++){
         for (var y=0;y<field[0].length;y++) {
+
+            console.log("checking x"+x+" y "+y);
                 // if current alive (exists) AND counter is equivalent to current turn then move the cell
                 if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
                     //temp store values
+                    console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
                     var thisR =    field[x][y].red;
                     var thisG =    field[x][y].green;
                     var thisB =    field[x][y].blue;
