@@ -5,6 +5,7 @@ var canvas, context, height, width, pixelWidth, field, age;
 var currentCycleCounter=0;
 var tempX;
 var tempY;
+var aliveCounter;
 
 function init(){
 	pixelWidth = 5;
@@ -105,14 +106,20 @@ function cycle(){
 
 	//clear field before next draw
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	//reset alive counter
+	aliveCounter=0;
+
 	// draw the field
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
+			//counting alive cells
+			if (field[i][j].exists) {aliveCounter++;}
+
 			context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
 			context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 		}
 	}
-
+	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
 	console.timeEnd("cycle duration");
