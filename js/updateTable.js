@@ -8,78 +8,60 @@ function updateCanvas(tableX,tableY){
 
 
                 // if
-                if (typeof(variable) != "undefined" && field [x][y]!=null && field[x][y].cycleCounter==currentCycleCounter) {
+                if (field [x][y].exists==true && field[x][y].cycleCounter==currentCycleCounter) {
                     //there is a cell alive here and it has not moved
-                    red =   Field[x][y].red;
-                    green = Field[x][y].green;
-                    blue =  Field[x][y].blue;
+                    thisR =    field[x][y].red;
+                    thisG =    field[x][y].green;
+                    thisB =    field[x][y].blue;
+                    //inc is the cycleCounterValue of the next iteration
                     inc = cycleCounter+1;
                     d = randDirection();
                     switch (d){
-                        //up left
+                        //down left
                         case 1:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
+                            //set target cell to current values and increment cycleCounter so it will not be targeted again this iteration
+                            updateCellsNewHome(x-1,y+1,thisR,thisG,thisB,inc);
+                            killCurrentCell (x,y);
+                            break;
+                        //down
+                        case 2:
+                            updateCellsNewHome(x,y+1,thisR,thisG,thisB,inc);
+                            killCurrentCell (x,y);
+                            break;
+                        //down right
+                        case 3:
+                            updateCellsNewHome(x+1,y+1,thisR,thisG,thisB,inc);
+                            killCurrentCell (x,y);
+                            break;
+                        //left
+                        case 4:
+                            updateCellsNewHome(x-1,y,thisR,thisG,thisB,inc);
+                            killCurrentCell (x,y);
+                            break;
+                        //stay
+                        case 5:
+                            //this is still done to update and age cell
+                            updateCellsNewHome(x,y,thisR,thisG,thisB,inc);
+                            //no kill cell in this case cuz it did not move
+                            break;
+                        //right
+                        case 6:
+                            updateCellsNewHome(x+1,y,thisR,thisG,thisB,inc);
+                            killCurrentCell (x,y);
+                            break;
+                        //up left
+                        case 7:
+                            updateCellsNewHome(x-1,y-1,thisR,thisG,thisB,inc);
                             killCurrentCell (x,y);
                             break;
                         //up
-                        case 2:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
-                            killCurrentCell (x,y);
-                            break;
-                        //up rigth
-                        case 3:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
-                            killCurrentCell (x,y);
-                            break;
-                        case 4:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
-                            killCurrentCell (x,y);
-                            break;
-                        case 5:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
-                            killCurrentCell (x,y);
-                            break;
-                        case 6:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
-                            killCurrentCell (x,y);
-                            break;
-                        case 7:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
-                            killCurrentCell (x,y);
-                            break;
                         case 8:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
+                            updateCellsNewHome(x,y-1,thisR,thisG,thisB,inc);
                             killCurrentCell (x,y);
                             break;
+                        //up right
                         case 9:
-                            Field[x-1][y-1].red=red;
-                            Field[x-1][y-1].green=green;
-                            Field[x-1][y-1].blue=blue;
-                            Field[x-1][y-1].cycleCounter=inc;
+                            updateCellsNewHome(x+1,y-1,thisR,thisG,thisB,inc);
                             killCurrentCell (x,y);
                             break;
                         default:
@@ -91,7 +73,7 @@ function updateCanvas(tableX,tableY){
                     //TODO Update direction target with color
                     //ELSE MERGE? MUTATE?
                     //TODO MUTATE
-                } //else cell does not exist
+                } //else this cell is empty
 
         }
     }
@@ -123,11 +105,24 @@ function checkTurn (x,y) {
     }
 }
 
+//update cell that current cell moved to
+function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
+    //TODO remove the if below when merged
+    if (age==null){age=1;}
+    //age simulated a cell aging. looses pigment
 
-//TODO KILL cell
-function killCurrentCell (x,y){
-    Field[x][y].red=null;
-    Field[x][y].green=null;
-    Field[x][y].blue=null;
-    Field[x][y].cycleCounter=null;
+    //check if target is out of bounds
+    field[targetX][targetY].red=thisR-age;
+    field[targetX][targetY].green=thisG-age;
+    field[targetX][targetY].blue=thisB-age;
+    field[targetX][targetY].cycleCounter=inc;
+}
+
+
+//kill the object that was formerly occupied by a cell that just moved away
+function killCurrentCell (targetX,targetY){
+    field[targetX][targetY].red=null;
+    field[targetX][targetY].green=null;
+    field[targetX][targetY].blue=null;
+    field[targetX][targetY].cycleCounter=null;
 }
