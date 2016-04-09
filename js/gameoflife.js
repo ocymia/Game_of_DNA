@@ -8,7 +8,7 @@ var tempY;
 var aliveCounter;
 
 function init(){
-	pixelWidth = 5;
+	//pixelWidth = 20;
 	age = 1;
 	canvas = document.querySelector("canvas");
 	height = document.body.clientHeight;
