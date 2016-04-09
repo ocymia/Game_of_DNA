@@ -5,6 +5,8 @@ var canvas, context, height, width, pixelWidth, field, age;
 var currentCycleCounter=0;
 var tempX;
 var tempY;
+var aliveCounter;
+
 
 function init(){
 	pixelWidth = 5;
@@ -28,8 +30,49 @@ function init(){
 		}
 	}
 	context = canvas.getContext("2d");
+	var numberOfPoitsToGenerate = +location.search.substring(location.search.indexOf("=")+1);
+	generateRandomPoints(numberOfPoitsToGenerate);
+	canvas.addEventListener("mousedown", paint);
 	canvas.addEventListener("mousemove", paint);
 	document.getElementById("start").addEventListener("click", startCycle);
+}
+
+
+function generateRandomPoints(numberOfPoints){
+	var i=1;
+	while (i<=numberOfPoints/3){
+		var randomX = Math.floor(Math.random()*field.length);
+		var randomY = Math.floor(Math.random()*field[0].length);
+		if (!field[randomX][randomY].exists){
+			field[randomX][randomY].red = 255;
+			field[randomX][randomY].exists = true;
+			context.fillStyle = "rgb(255,0,0)";
+			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
+			i++;
+		}
+	}
+	while (i<=2*numberOfPoints/3){
+		var randomX = Math.floor(Math.random()*field.length);
+		var randomY = Math.floor(Math.random()*field[0].length);
+		if (!field[randomX][randomY].exists){
+			field[randomX][randomY].green = 255;
+			field[randomX][randomY].exists = true;
+			context.fillStyle = "rgb(0,255,0)";
+			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
+			i++;
+		}
+	}
+	while (i<=numberOfPoints){
+		var randomX = Math.floor(Math.random()*field.length);
+		var randomY = Math.floor(Math.random()*field[0].length);
+		if (!field[randomX][randomY].exists){
+			field[randomX][randomY].blue = 255;
+			field[randomX][randomY].exists = true;
+			context.fillStyle = "rgb(0,0,255)";
+			context.fillRect(randomX*pixelWidth, randomY*pixelWidth, pixelWidth, pixelWidth);
+			i++;
+		}
+	}
 }
 
 function paint(event){
@@ -51,27 +94,33 @@ function startCycle(){
 
 function cycle(){
 	console.time("cycle duration");
-	
+
 	// calculate the lifecycle
 	/*for (var i=0; i<field.length; i++){
-		for (var j=0; j<field[i].length; j++){
-			//JERRY IS DOING THIS
-			field[i][j].green+=10;
-		}
-	}*/
+	 for (var j=0; j<field[i].length; j++){
+	 //JERRY IS DOING THIS
+	 field[i][j].green+=10;
+	 }
+	 }*/
 
 	updateTable();
 
 	//clear field before next draw
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	//reset alive counter
+	aliveCounter=0;
+
 	// draw the field
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
+			//counting alive cells
+			if (field[i][j].exists) {aliveCounter++;}
+
 			context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
 			context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 		}
 	}
-	
+	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
 	console.timeEnd("cycle duration");
@@ -145,11 +194,11 @@ function updateTable(){
 						break;
 					//stay
 					case 5:
-						//this is still done to update and age cell
-					/*	if (updateCellsNewHome(x,y,thisR,thisG,thisB,inc)) {
-							//killCurrentCell (x,y);
-						}
-						break;*/
+					//this is still done to update and age cell
+						mutate(x,y);
+						field[x][y].cycleCounter=inc;
+						//console.log("mutated");
+						break;
 					//right
 					case 6:
 						if (updateCellsNewHome(x+1,y,thisR,thisG,thisB,inc)) {
@@ -225,7 +274,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
-		console.log("cant move");
+		//console.log("cant move");
 		return false;
 	}
 }
@@ -242,10 +291,11 @@ function killCurrentCell (targetX,targetY){
 
 //check if target is out of the visible field
 function notOutOfBoundsAndNotAlive (x,y,thisR,thisG,thisB,inc){
-	console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
+
+	//console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
 	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
-		console.log("out of bounds");
+		//console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
@@ -266,7 +316,7 @@ function notAlive (x,y,thisR,thisG,thisB,inc){
 		//TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
 		fusion (x,y,thisR,thisG,thisB,inc);
 		//
-		console.log("target cell is alive - should mutate");
+		//console.log("target cell is alive - should mutate");
 		return false;
 	}
 }
@@ -309,4 +359,49 @@ function procreate (targetX,targetY,thisR,thisG,thisB,inc){
 	//create new cell with properties of both
 
 	//kill old cell
+
+}
+
+function mutate(x,y){
+	function randomIntFromInterval(min,max) {
+    	return Math.floor(Math.random()*(max-min+1)+min);
+	}
+	//current values
+	var cR =field[x][y].red;
+	var cG =field[x][y].green;
+	var cB =field[x][y].blue;
+	var mutateValue = randomIntFromInterval(1,20);
+	if (cR >= cB && cR >= cG){
+		// Red is strongest
+		field[x][y].red = field[x][y].red - mutateValue;
+		if (cB>=cG){
+			//if blue is stronger then green then give to blue
+			//second strongest gene wins over weakest
+			field[x][y].blue = field[x][y].blue + mutateValue;
+		} else {
+			//green is second
+			field[x][y].green = field[x][y].green + mutateValue;
+		}
+	} else if(cG >= cR && cG >= cB){
+		// Green is strongest
+		field[x][y].green = field[x][y].green - mutateValue;
+		if (cB>=cG){
+			//blue is second
+			field[x][y].blue = field[x][y].blue + mutateValue;
+		} else {
+			//red is second
+			field[x][y].red = field[x][y].red + mutateValue;
+		}
+	} else {
+		// Blue ist strongest
+		field[x][y].blue = field[x][y].blue - mutateValue;
+		if (cR>=cG){
+			//red is second
+			field[x][y].red = field[x][y].red + mutateValue;
+		} else {
+			//green is second
+			field[x][y].green = field[x][y].green + mutateValue;
+		}
+
+	}
 }
