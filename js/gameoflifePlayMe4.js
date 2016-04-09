@@ -411,7 +411,7 @@ function checkForPartnerCell (thisX,thisY){
 		var tG=field[thisX][thisY].green;
 		var tB=field[thisX][thisY].blue;
 
-		if(field[thisX-1][thisY].exists){
+		if(thisX-1>=0 && field[thisX-1][thisY].exists){
 			//left has partner
 			//get partner rgb
 			var pR=field[thisX-1][thisY].red;
@@ -442,7 +442,7 @@ function checkForPartnerCell (thisX,thisY){
 				rest1=strongestRed;
 				rest2=strongestGreen;
 			}
-		}else if (field[thisX][thisY-1].exists){
+		}else if (thisY-1>=0 && field[thisX][thisY-1].exists){
 			//partner top
 			//get partner rgb
 			var pR=field[thisX][thisY-1].red;
@@ -473,12 +473,43 @@ function checkForPartnerCell (thisX,thisY){
 				rest1=strongestRed;
 				rest2=strongestGreen;
 			}
-		}else if (field[thisX+1][thisY].exists){
+		}else if (thisX+1<field.length && field[thisX+1][thisY].exists){
 			//partner top
 			//get partner rgb
 			var pR=field[thisX+1][thisY].red;
 			var pG=field[thisX+1][thisY].green;
 			var pB=field[thisX+1][thisY].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+		}else if (thisY+1<field[0].length && field[thisX][thisY+1].exists){
+			//partner top
+			//get partner rgb
+			var pR=field[thisX][thisY+1].red;
+			var pG=field[thisX][thisY+1].green;
+			var pB=field[thisX][thisY+1].blue;
 
 			//define strongest score values
 			var strongestRed,strongestGreen,strongestBlue;
