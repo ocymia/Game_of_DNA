@@ -101,27 +101,14 @@ function randDirection (){
     return d;
 }
 
-function checkTurn (x,y) {
-    //TODO DEFINE IF CELL
-    //set turn value of cell[x,y] to next turn
-    if (field[x][y][4] == thisTurn) {
-        //cell has not moved, so set its turn to next (so it wont be moved again)
-        field[x][y][4]++;
-        return 1;
-    } else {
-        //cell has already moved so return 0 and if wont be executed
-        return 0;
-    }
-}
-
 //update cell that current cell moved to // also returns true if it moved
 function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
     //TODO remove the if below when merged
     if (age===null){age=1;}
     //age simulated a cell aging. looses pigment
 
-    //check if target is out of bounds
-    if (outOfBounds(targetX,targetY)){
+    //check if target is located in the visible field AND is not occupied by another cell
+    if (notOutOfBounds(targetX,targetY)&&notAlive(targetX,targetY)){
         field[targetX][targetY].red=thisR-age;
         field[targetX][targetY].green=thisG-age;
         field[targetX][targetY].blue=thisB-age;
@@ -142,12 +129,26 @@ function killCurrentCell (targetX,targetY){
     field[targetX][targetY].exists=false;
 }
 
-function outOfBounds (x,y){
+//check if target is out of the visible field
+function notOutOfBounds (x,y){
     if (x<0 || y<0 || x>field.length || y>field[0].length){
         //target cell is out the bounds
         return 0;
     } else {
         //target cell is in the bounds
         return 1;
+    }
+}
+
+//checks if target is not alive
+function notAlive (x,y){
+    if (field[x][y].exists=true){
+        //its true, target is not alive
+        return true;
+    }else{
+        //its false target is alive
+        //TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
+        //
+        return false;
     }
 }
