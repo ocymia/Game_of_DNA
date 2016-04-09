@@ -4,6 +4,12 @@
     <meta charset="utf-8"/>
     <title>FATAL ERROR</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <script type="text/javascript">
+        function showValue(newValue)
+        {
+            document.getElementById("range").innerHTML=newValue;
+        }
+    </script>
 </head>
 <body id="body">
     <div id="header">
@@ -17,7 +23,9 @@
             Random Cells:<br>
             <input type="number" name="rndpoints" value="500"><br>
             Cells Size:<br>
-            <input type="number" name="pixsize" value="5"><br>
+
+            <input type="range" name="pixsize" min="1" max="50" value="2" step="1" onchange="showValue(this.value)" />
+            <span id="range">2</span><br>
             <button>...GO...</button>
         </form>
     </div>
