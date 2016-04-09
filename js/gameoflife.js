@@ -3,6 +3,8 @@
 "use strict";
 var canvas, context, height, width, pixelWidth, field, age;
 var currentCycleCounter=0;
+var tempX;
+var tempY;
 
 function init(){
 	pixelWidth = 5;
@@ -90,7 +92,8 @@ function updateTable(){
 	//console.log("update table started");
 	for (var x=0;x<field.length;x++){
 		for (var y=0;y<field[0].length;y++) {
-
+			tempX=x;
+			tempY=y;
 			//console.log("checking x"+x+" y "+y);
 			// if current alive (exists) AND counter is equivalent to current turn then move the cell
 			if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
@@ -213,7 +216,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 	if (age===null){age=1;}
 	//age simulated a cell aging. looses pigment
 	//check if target is located in the visible field AND is not occupied by another cell
-	if (notOutOfBoundsAndNotAlive(targetX,targetY)){
+	if (notOutOfBoundsAndNotAlive(targetX,targetY,thisR,thisG,thisB,inc)){
 		field[targetX][targetY].red=thisR-age;
 		field[targetX][targetY].green=thisG-age;
 		field[targetX][targetY].blue=thisB-age;
@@ -238,7 +241,7 @@ function killCurrentCell (targetX,targetY){
 }
 
 //check if target is out of the visible field
-function notOutOfBoundsAndNotAlive (x,y){
+function notOutOfBoundsAndNotAlive (x,y,thisR,thisG,thisB,inc){
 	console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
 	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
@@ -246,7 +249,7 @@ function notOutOfBoundsAndNotAlive (x,y){
 		return 0;
 	} else {
 		//target cell is in the bounds
-		if (notAlive(x,y)){
+		if (notAlive(x,y,thisR,thisG,thisB,inc)){
 			return 1;
 		}
 		return 0;
@@ -254,15 +257,56 @@ function notOutOfBoundsAndNotAlive (x,y){
 }
 
 //checks if target is not alive
-function notAlive (x,y){
+function notAlive (x,y,thisR,thisG,thisB,inc){
 	if (!field[x][y].exists){
 		//its true, target is not alive
 		return true;
 	}else{
 		//its false target is alive
 		//TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
+		fusion (x,y,thisR,thisG,thisB,inc);
 		//
 		console.log("target cell is alive - should mutate");
 		return false;
 	}
+}
+
+function fusion(x,y,thisR,thisG,thisB,inc){
+	var lastR=thisR;
+	var lastG=thisG;
+	var lastB=thisB;
+	var targetR=field[x][y].red;
+	var targetG=field[x][y].green;
+	var targetB=field[x][y].blue;
+	var newR=lastR+targetR;
+	var newG=lastG+targetG;
+	var newB=lastB+targetB;
+	if (newR>255){newR=255;}
+	if (newG>255){newG=255;}
+	if (newB>255){newB=255;}
+	//set the fused cell
+	field[x][y].red=newR;
+	field[x][y].green=newG;
+	field[x][y].blue=newB;
+	field[x][y].exists=true;
+	field[x][y].cycleCounter=inc;
+	//kill old cell
+	killCurrentCell(tempX,tempY);
+}
+
+function procreate (targetX,targetY,thisR,thisG,thisB,inc){
+	var lastR=thisR;
+	var lastG=thisG;
+	var lastB=thisB;
+	var targetR=field[x][y].red;
+	var targetG=field[x][y].green;
+	var targetB=field[x][y].blue;
+	//take rgb of entering cell
+
+	//take rgb of existing cell
+
+
+	//create new cell with properties of both
+
+	//kill old cell
 }
