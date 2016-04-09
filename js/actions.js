@@ -34,5 +34,11 @@ function procreate(x,y){
 }
 
 function mutate(x,y){
+	function randomIntFromInterval(min,max) {
+    	return Math.floor(Math.random()*(max-min+1)+min);
+	}
 
+	field[x][y].red = field[x][y].red + randomIntFromInterval(1,10)-5;
+	field[x][y].green = field[x][y].green + randomIntFromInterval(1,10)-5;
+	field[x][y].blue = field[x][y].blue + randomIntFromInterval(1,10)-5;
 }
