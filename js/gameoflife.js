@@ -44,7 +44,8 @@ function paint(event){
 
 function startCycle(){
 	this.hidden = true;
-	setInterval(cycle, 1000);
+	cycle();
+	//setInterval(cycle, 5000);
 }
 
 function cycle(){
@@ -91,7 +92,7 @@ function updateTable(){
 	for (var x=0;x<field.length;x++){
 		for (var y=0;y<field[0].length;y++) {
 
-			console.log("checking x"+x+" y "+y);
+			//console.log("checking x"+x+" y "+y);
 			// if current alive (exists) AND counter is equivalent to current turn then move the cell
 			if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
 				//temp store values
