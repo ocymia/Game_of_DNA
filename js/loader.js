@@ -6,4 +6,5 @@ function load(){
 	script.src = "js/gameoflifePlayMe"+scriptNr+".js";
 	document.body.appendChild(script);
 }
+
 load();
