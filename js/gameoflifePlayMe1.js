@@ -168,11 +168,28 @@ function updateTable(){
 			//console.log("checking x"+x+" y "+y);
 			// if current alive (exists) AND counter is equivalent to current turn then move the cell
 			if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
-				//temp store values
-				//console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
+
+				//WEAKEN OP CELLS
+				// Check strongest strain over 1000
+				//[0] is value [1] is name of strain
+				var strongest = determinStrongest(field[x][y].red,field[x][y].green,field[x][y].blue);
+				// modulo 255 the shit out of strongest & set others to zero
+				if (field[x][y].red>254||field[x][y].green>254||field[x][y].blue>254)
+					if (strongest=="green"){
+						field[x][y].blue=0;
+						field[x][y].red=0;
+					}else if(strongest=="blue"){
+						field[x][y].red=0;
+						field[x][y].green=0;
+					}else{
+						field[x][y].blue=0;
+						field[x][y].green=0;
+					}//end weaken op cells
 				var thisR =    field[x][y].red;
 				var thisG =    field[x][y].green;
 				var thisB =    field[x][y].blue;
+
+
 				//inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
 				var inc = currentCycleCounter+1;
 				//determin direction in wich to move
@@ -531,5 +548,16 @@ function createChild (x,y,c,v,r1,r2){
 			field[x][y].blue=v+strainGeneticsPowerMajor;
 			field[x][y].exists=true;
 			break;
+	}
+}
+
+function determinStrongest(r,g,b){
+	//Note: if multiple cases apply then preference order will be r over g over b (for now)
+	if (r>=g && r>=b){
+		return "red";
+	}else if (g>=r && g>=b){
+		return "green";
+	}else if (b>=r && b>=g){
+		return "blue";
 	}
 }
