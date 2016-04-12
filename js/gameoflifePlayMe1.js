@@ -39,7 +39,8 @@ var delayCell = 50;
 //This defines the mating zone in which cellls can reproduce
 //The bigger the number -> the smaller the mating zone
 var matingZone = 1;
-//next do reset of 250 rgb cells
+//1 means no trail //0 = cells leave trail behind
+var removeDead =0;
 
 switch (showOff){
 	case 0:
@@ -57,6 +58,7 @@ switch (showOff){
 		mode=4;
 		delayCell=20;
 		matingZone=1;
+		removeDead =0;
 		break;
 	case 2:
 		//white wins
@@ -71,6 +73,22 @@ switch (showOff){
 		mode=0;
 		delayCell=50;
 		matingZone=1;
+		removeDead =0;
+		break;
+	case 3:
+		//no trails
+		randChildren =1;
+		strainGeneticsPowerMajor=150;
+		strainGeneticsPowerMinor=30;
+		residue=120;
+		opCell=50;
+		minMutate=10;
+		maxMutate=40;
+		maturityAge=getRand(1,100);
+		mode=4;
+		delayCell=getRand(1,100);
+		matingZone=1;
+		removeDead =1;
 		break;
 	default:
 		break;
@@ -366,6 +384,7 @@ function updateTable(){
 						}
 						break;
 					default:
+						break;
 				}
 				//TODO Make this cell white
 
@@ -408,7 +427,8 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
-		//console.log("cant move");
+		//this never happens
+		// /console.log("cant move");
 		return false;
 	}
 }
@@ -416,9 +436,12 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
-	// field[targetX][targetY].red=0;
-	// field[targetX][targetY].green=0;
-	// field[targetX][targetY].blue=0;
+	//console.log("kill"+targetX+"/"+targetY);
+	if (removeDead){
+		field[targetX][targetY].red=0;
+		field[targetX][targetY].green=0;
+		field[targetX][targetY].blue=0;
+	}
 	field[targetX][targetY].cycleCounter=null;
 	field[targetX][targetY].exists=false;
 }
