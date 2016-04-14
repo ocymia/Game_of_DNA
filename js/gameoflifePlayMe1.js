@@ -91,7 +91,7 @@ switch (showOff){
 		removeDead =1;
 		break;
 	case 4:
-		//cool stuff
+		//cool stuff - RED TOWER BURNING
 		randChildren =1;
 		strainGeneticsPowerMajor=100;
 		strainGeneticsPowerMinor=30;
