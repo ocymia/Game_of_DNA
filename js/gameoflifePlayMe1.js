@@ -8,7 +8,7 @@ var tempY;
 var aliveCounter;
 var theInterval;
 
-var showOff = 1;
+var showOff = 4;
 /**PARAMETERS*/
 //this makes children dna more random. strainGenetics act like min value, old value being the min
 var randChildren =0;
@@ -21,7 +21,7 @@ var strainGeneticsPowerMinor = 185;
 var residue=12;
 //var opCell defines when a Cell is considered over powered
 //this will trigger over powered cells to be weakened - put it to 256 to disable
-var opCell=20;
+var opCell=80;
 //these define the minimum and maximum mutation vaues a cell can have when not moving
 var minMutate =151;
 var maxMutate =200;
@@ -87,6 +87,21 @@ switch (showOff){
 		maturityAge=getRand(1,100);
 		mode=4;
 		delayCell=getRand(1,100);
+		matingZone=1;
+		removeDead =1;
+		break;
+	case 4:
+		//cool stuff
+		randChildren =1;
+		strainGeneticsPowerMajor=100;
+		strainGeneticsPowerMinor=30;
+		residue=10;
+		opCell=80;
+		minMutate=10;
+		maxMutate=40;
+		maturityAge=getRand(1,1);
+		mode=4;
+		delayCell=getRand(1,71);
 		matingZone=1;
 		removeDead =1;
 		break;
