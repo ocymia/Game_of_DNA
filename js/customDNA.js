@@ -52,17 +52,24 @@ switch (showOff){
 		randChildren = 1;
 		strainGeneticsPowerMajor = $_GET['sMaj'];
 		strainGeneticsPowerMinor = $_GET['sMin'];
+		console.log("Strain Power: " +strainGeneticsPowerMinor+"-"+strainGeneticsPowerMajor);
 		residue = $_GET['rVal'];
+		console.log("resiue " +residue);
 		opCell = $_GET['op'];
+		console.log("opCell " +opCell);
 		minMutate = $_GET['minM'];
 		maxMutate = $_GET['maxM'];
+		console.log("mutate " +minMutate+"/"+maxMutate);
 		maturityAge = $_GET['mAge'];
+		console.log("maturity age " +maturityAge);
 		//TODO mode = $_GET[''];
 		mode = 4;
 		delayCell = $_GET['delay'];
+		console.log("delayCell " +delayCell);
 		matingZone = $_GET['mZone'];
+		console.log("matingZone " +matingZone);
 		removeDead = $_GET['trail'];
-		console.log(minMutate);
+		console.log("removeDead " +removeDead);
 		break;
 	case 2:
 		//all life gets a chance // very diversified setting

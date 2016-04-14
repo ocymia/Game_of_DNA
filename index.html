@@ -16,7 +16,7 @@
 					<input type="number" name="rndpoints" value="120"/><br>
 					
 					Cells Size:<br/>
-					<input type="range" name="pixsize" id="rangeinput" min="1" max="10" value="4" step="1" oninput="showValue(this.value)" />
+					<input type="range" name="pixsize" id="rangeinput" min="3" max="10" value="4" step="1" oninput="showValue(this.value)" />
 					<output id="range">4</output><br/>
 
 					Presets:
@@ -36,8 +36,8 @@
 						Random Cells:<br/>
 						<input type="number" name="rndpoints" value="120"/><br>
 						Cells Size:<br/>
-						<input type="range" name="pixsize" id="rangeinput" min="1" max="10" value="4" step="1" oninput="showValue(this.value)" />
-						<output id="range">4</output><br/>
+						<input type="range2" name="pixsize" id="range2input" min="4" max="15" value="4" step="1" oninput="showValue(this.value)" />
+						<output id="range2">4</output><br/>
 
 						Major Strain influence: <input type="number" size="30" name="sMaj"><br>
 						Minor Strain influence: <input type="number" size="30" name="sMin"><br>
@@ -76,8 +76,10 @@
 		<script>
 			function showValue(newValue){
 				document.getElementById("range").innerHTML=newValue;
+				document.getElementById("range2").innerHTML=newValue;
 			}
 			showValue(document.getElementById("rangeinput").value);
+			showValue(document.getElementById("range2input").value);
 		</script>
 	</body>
 </html>
