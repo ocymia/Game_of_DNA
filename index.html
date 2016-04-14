@@ -19,6 +19,7 @@
 					<input type="range" name="pixsize" id="rangeinput" min="1" max="10" value="4" step="1" oninput="showValue(this.value)" />
 					<output id="range">4</output><br/>
 
+					Presets:
 					<select name="selscript">
                         <option value="1">3 colours</option>
 						<option value="4">2 colours</option>
@@ -26,8 +27,40 @@
 						<option value="2">Pulse</option>
 					</select>
 
-					<button>...GO...</button>
+					<button>...Presets GO...</button>
 				</form>
+
+				<form id="custom" action="customGameOfLife.html" target="_blank">
+					<fieldset>
+						<legend>Custom Parameters:</legend>
+						Random Cells:<br/>
+						<input type="number" name="rndpoints" value="120"/><br>
+						Cells Size:<br/>
+						<input type="range" name="pixsize" id="rangeinput" min="1" max="10" value="4" step="1" oninput="showValue(this.value)" />
+						<output id="range">4</output><br/>
+
+						Major Strain influence: <input type="number" size="30" name="sMaj"><br>
+						Minor Strain influence: <input type="number" size="30" name="sMin"><br>
+						Residue Value: <input type="number" size="30" name="rVal"><br>
+						Over Powered Trigger: <input type="number" size="30" name="op"><br>
+						Minimum mutation value: <input type="number" size="30" name="minM"><br>
+						Maximum mutation value:: <input type="number" size="30" name="maxM"><br>
+						Maturity Age: <input type="number" size="30" name="mAge"><br>
+						Take a break: <input type="number" size="30" name="delay"><br>
+						Mating Zone: <input type="number" size="30" name="mZone"><br>
+						Cells can leave trails:
+								<select name="trail">
+									<option value="1">No trail</option>
+									<option value="0">Trail visible</option>
+								</select><br>
+
+						<!--showoff preset - 1 is custom-->
+						<input type="hidden" size="30" name="so" value="1"><br>
+
+						<button>...Custom GO...</button>
+					</fieldset>
+				</form>
+
 				<div class="options">
 					<h3>Recommended settings</h3>
 					<p>3 colours: 120 cells with size 4</p>
