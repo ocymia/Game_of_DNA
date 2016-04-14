@@ -100,7 +100,7 @@ switch (showOff){
 		minMutate=10;
 		maxMutate=40;
 		maturityAge=getRand(1,1);
-		mode=4;
+		mode=3;
 		delayCell=getRand(1,71);
 		matingZone=1;
 		removeDead =1;

@@ -463,7 +463,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
 	//console.log("kill"+targetX+"/"+targetY);
-	if (removeDead){
+	if (removeDead==1){
 		field[targetX][targetY].red=0;
 		field[targetX][targetY].green=0;
 		field[targetX][targetY].blue=0;
