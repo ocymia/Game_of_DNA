@@ -8,106 +8,11 @@ var tempY;
 var aliveCounter;
 var theInterval;
 
-var showOff = 4;
 /**PARAMETERS*/
-//this makes children dna more random. strainGenetics act like min value, old value being the min
-var randChildren =0;
-//value added to main strain when child is created
+//value given to main strain when child is created
 var strainGeneticsPowerMajor = 25;
 //value taken from secondary strains when child is created
-var strainGeneticsPowerMinor = 185;
-//once a cell becomes very strong it looses some of the weaker strains DNA value
-//var residue defines how many % will stay from the weaker strains
-var residue=12;
-//var opCell defines when a Cell is considered over powered
-//this will trigger over powered cells to be weakened - put it to 256 to disable
-var opCell=80;
-//these define the minimum and maximum mutation vaues a cell can have when not moving
-var minMutate =151;
-var maxMutate =200;
-//maturityAge is the age a cell must have to become an active adult
-var maturityAge=0;
-//var mode allows several modes influencing the op cells
-//mode 0 = no over powered cell handling
-//mode 1 = weakening not so dominant strains in the over powered cell leaving $residue % behind
-//mode 2 = setting dominant strain to residue
-//mode 3 = setting dominant strain to residue and delaying it by $delayCell
-//mode 4 = if a cell has values over $opCell in every strain, then modulo residue all of them
-var mode =4;
-//this is used for mode 3 to deayy op cells because they become slow
-var delayCell = 50;
-//This defines the mating zone in which cellls can reproduce
-//The bigger the number -> the smaller the mating zone
-var matingZone = 1;
-//1 means no trail //0 = cells leave trail behind
-var removeDead =0;
-
-switch (showOff){
-	case 0:
-		break;
-	case 1:
-		//all life gets a chance // very diversified setting
-		randChildren =1;
-		strainGeneticsPowerMajor=1;
-		strainGeneticsPowerMinor=1;
-		residue=12;
-		opCell=100;
-		minMutate=150;
-		maxMutate=200;
-		maturityAge=50;
-		mode=4;
-		delayCell=20;
-		matingZone=1;
-		removeDead =0;
-		break;
-	case 2:
-		//white wins
-		randChildren =0;
-		strainGeneticsPowerMajor=0;
-		strainGeneticsPowerMinor=0;
-		residue=0;
-		opCell=250;
-		minMutate=10;
-		maxMutate=200;
-		maturityAge=10;
-		mode=0;
-		delayCell=50;
-		matingZone=1;
-		removeDead =0;
-		break;
-	case 3:
-		//no trails
-		randChildren =1;
-		strainGeneticsPowerMajor=150;
-		strainGeneticsPowerMinor=30;
-		residue=120;
-		opCell=50;
-		minMutate=10;
-		maxMutate=40;
-		maturityAge=getRand(1,100);
-		mode=4;
-		delayCell=getRand(1,100);
-		matingZone=1;
-		removeDead =1;
-		break;
-	case 4:
-		//cool stuff - RED TOWER BURNING
-		randChildren =1;
-		strainGeneticsPowerMajor=100;
-		strainGeneticsPowerMinor=30;
-		residue=10;
-		opCell=80;
-		minMutate=10;
-		maxMutate=40;
-		maturityAge=getRand(1,1);
-		mode=3;
-		delayCell=getRand(1,1);
-		matingZone=1;
-		removeDead =1;
-		break;
-	default:
-		break;
-}
+var strainGeneticsPowerMinor = 10;
 
 function init(){
 	var parameters = location.search;
@@ -236,7 +141,7 @@ function cycle(){
 		}
 	}
 	//stop if no cells alive
-	if (aliveCounter===0){clearInterval(theInterval);console.log("All cells are dead. Turns:"+currentCycleCounter);}
+	if (aliveCounter===0){clearInterval(theInterval);console.log("FINISH");}
 	//console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
@@ -261,63 +166,13 @@ function updateTable(){
 			tempX=x;
 			tempY=y;
 			//console.log("checking x"+x+" y "+y);
-			// if current cell is alive (exists) AND counter is equal to current turn then move the cell
+			// if current alive (exists) AND counter is equivalent to current turn then move the cell
 			if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
-				//assure residue is at least 1
-				if (residue==0){residue=1;}
-				//WEAKEN OP CELLS
-				//mode 1 = weakening not so dominant strains in the over powered cell leaving $residue % behind
-				//mode 2 = setting dominant strain to residue
-				//mode 3 = setting dominant strain to residue and delaying it by $delayCell
-				//mode 4 = if a cell has values over $opCell in every strain, then modulo residue all of them
-				if(mode==1) {
-					// if one strain reaches near max visible value then weaken others by a factor of residue
-					if (field[x][y].red > opCell || field[x][y].green > opCell || field[x][y].blue > opCell) {
-						var strongest = determinStrongest(field[x][y].red, field[x][y].green, field[x][y].blue);
-						//console.log(strongest);
-						if (strongest == "green") {
-							field[x][y].blue = Math.floor(field[x][y].blue * residue / 100);
-							field[x][y].red = Math.floor(field[x][y].red * residue / 100);
-						} else if (strongest == "blue") {
-							field[x][y].red = Math.floor(field[x][y].red * residue / 100);
-							field[x][y].green = Math.floor(field[x][y].green * residue / 100);
-						} else if (strongest == "red") {
-							field[x][y].blue = Math.floor(field[x][y].blue * residue / 100);
-							field[x][y].green = Math.floor(field[x][y].green * residue / 100);
-						}//end weaken op cell's secondary strains
-					}
-				}else if (mode==2){
-					var strongest = determinStrongest(field[x][y].red, field[x][y].green, field[x][y].blue);
-					if (strongest == "green") {
-						field[x][y].green = residue;
-					} else if (strongest == "blue") {
-						field[x][y].blue = residue;
-					} else if (strongest == "red") {
-						field[x][y].blue = residue;
-					}//end kill strong strain
-				}else if (mode==3){
-					var strongest = determinStrongest(field[x][y].red, field[x][y].green, field[x][y].blue);
-					if (strongest == "green") {
-						field[x][y].green = residue;
-					} else if (strongest == "blue") {
-						field[x][y].blue = residue;
-					} else if (strongest == "red") {
-						field[x][y].blue = residue;
-					}
-					field[x][y].cycleCounter=field[x][y].cycleCounter+delayCell;
-					//end weaken and delay strong strain
-				}else if (mode==4){
-					if (field[x][y].red > opCell && field[x][y].green > opCell && field[x][y].blue > opCell) {
-						field[x][y].red = Math.floor(field[x][y].red % residue);
-						field[x][y].green = Math.floor(field[x][y].green % residue);
-						field[x][y].blue = Math.floor(field[x][y].blue % residue);
-					}
-				}//other mode ideas weaken secondary and delay ; delete alive
+				//temp store values
+				//console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
 				var thisR =    field[x][y].red;
 				var thisG =    field[x][y].green;
 				var thisB =    field[x][y].blue;
-
-
 				//inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
 				var inc = currentCycleCounter+1;
 				//determin direction in wich to move
@@ -399,7 +254,6 @@ function updateTable(){
 						}
 						break;
 					default:
-						break;
 				}
 				//TODO Make this cell white
 
@@ -442,8 +296,7 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
-		//this never happens
-		// /console.log("cant move");
+		//console.log("cant move");
 		return false;
 	}
 }
@@ -451,12 +304,9 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
-	//console.log("kill"+targetX+"/"+targetY);
-	if (removeDead){
-		field[targetX][targetY].red=0;
-		field[targetX][targetY].green=0;
-		field[targetX][targetY].blue=0;
-	}
+	// field[targetX][targetY].red=0;
+	// field[targetX][targetY].green=0;
+	// field[targetX][targetY].blue=0;
 	field[targetX][targetY].cycleCounter=null;
 	field[targetX][targetY].exists=false;
 }
@@ -515,6 +365,23 @@ function fusion(x,y,thisR,thisG,thisB,inc){
 	killCurrentCell(tempX,tempY);
 }
 
+function procreate (targetX,targetY,thisR,thisG,thisB,inc){
+	var lastR=thisR;
+	var lastG=thisG;
+	var lastB=thisB;
+	var targetR=field[x][y].red;
+	var targetG=field[x][y].green;
+	var targetB=field[x][y].blue;
+	//take rgb of entering cell
+
+	//take rgb of existing cell
+
+
+	//create new cell with properties of both
+
+	//kill old cell
+}
+
 function mutate(x,y){
 	function randomIntFromInterval(min,max) {
 		return Math.floor(Math.random()*(max-min+1)+min);
@@ -523,7 +390,7 @@ function mutate(x,y){
 	var cR =field[x][y].red;
 	var cG =field[x][y].green;
 	var cB =field[x][y].blue;
-	var mutateValue = randomIntFromInterval(minMutate,maxMutate);
+	var mutateValue = randomIntFromInterval(1,20);
 	if (cR >= cB && cR >= cG){
 		// Red is strongest
 		field[x][y].red = field[x][y].red - mutateValue;
@@ -560,7 +427,7 @@ function mutate(x,y){
 }
 
 function checkForPartnerCell (thisX,thisY){
-	if (thisX < matingZone || thisY < matingZone || thisX > field.length-matingZone || thisY>field[0].length-matingZone){
+	if (thisX == 0 || thisY == 0){
 		//cell is on some north or west border, its to cold to reproduce here ;)
 	}else{
 		//get these rgb (of the cell that will mate with partner cell
@@ -642,104 +509,27 @@ function checkForPartnerCell (thisX,thisY){
 	}
 }
 
-//r1 and r2 are the rest values that are not the strongest strain
 function createChild (x,y,c,v,r1,r2){
 	//strongest strain gets stronger on the expense of weaker ones
-	if (randChildren ==true){
-		switch (c){
-			case "red":
-				field[x][y].red=v+strainGeneticsPowerMajor;
-				field[x][y].green=r1-strainGeneticsPowerMinor;
-				field[x][y].blue=r2-strainGeneticsPowerMinor;
-				field[x][y].exists=true;
-				field[x][y].cycleCounter=currentCycleCounter+1+maturityAge;
-				break;
-			case "green":
-				field[x][y].red=r1-strainGeneticsPowerMinor;
-				field[x][y].green=v+strainGeneticsPowerMajor;
-				field[x][y].blue=r2-strainGeneticsPowerMinor;
-				field[x][y].exists=true;
-				field[x][y].cycleCounter=currentCycleCounter+1+maturityAge;
-				break;
-			case "blue":
-				field[x][y].red=r1-strainGeneticsPowerMinor;
-				field[x][y].green=r2-strainGeneticsPowerMinor;
-				field[x][y].blue=v+strainGeneticsPowerMajor;
-				field[x][y].exists=true;
-				field[x][y].cycleCounter=currentCycleCounter+1+maturityAge;
-				break;
-		}
-	}else{
-		switch (c){
-			case "red":
-				field[x][y].red=getRand(strainGeneticsPowerMajor,v);
-				field[x][y].green=getRand(strainGeneticsPowerMinor,r1);
-				field[x][y].blue=getRand(strainGeneticsPowerMinor,r2);
-				field[x][y].exists=true;
-				field[x][y].cycleCounter=currentCycleCounter+1+maturityAge;
-				break;
-			case "green":
-				field[x][y].red=getRand(strainGeneticsPowerMinor,r1);
-				field[x][y].green=getRand(strainGeneticsPowerMajor,v);
-				field[x][y].blue=getRand(strainGeneticsPowerMinor,r2);
-				field[x][y].exists=true;
-				field[x][y].cycleCounter=currentCycleCounter+1+maturityAge;
-				break;
-			case "blue":
-				field[x][y].red=getRand(strainGeneticsPowerMinor,r1);
-				field[x][y].green=getRand(strainGeneticsPowerMinor,r2);
-				field[x][y].blue=getRand(strainGeneticsPowerMajor,v);
-				field[x][y].exists=true;
-				field[x][y].cycleCounter=currentCycleCounter+1+maturityAge;
-				break;
-		}
-	}
-}
+	switch (c){
+		case "red":
 
-//gets 3 values that represent rgb in that order, returns stronest
-//also performs special task if multiple cases apply
-function determinStrongest(r,g,b){
-	//check if multiple strains caused this to trigger and random choos one of the op strains to be dominant
-	//rgb 1-3  // rg 1-2 // gb 2-3 // rb 3-4
-	if (r==g==b){
-		return getRandomStrain(1,3);
-	} else if (r==g) {
-		return getRandomStrain(1,2);
-	} else if (g==b) {
-		return getRandomStrain(2,3);
-	} else if (r==b) {
-		return getRandomStrain(3,4);
-	} else if (r>g && r>b){
-		return "red";
-	}else if (g>r && g>b){
-		return "green";
-	}else if (b>r && b>g){
-		return "blue";
-	}else{
-		alert("this should not happen "+r+","+g+","+b);
-		return "blue";
-	}
-}
-
-function getRandomStrain(min, max) {
-	var rStrain = Math.random() * (max - min) + min;
-	switch(rStrain){
-		//rgb 1-3  // rg 1-2 // gb 2-3 // rb 3-4
-		case 1:
-			return "red";
+			field[x][y].red=v+strainGeneticsPowerMajor;
+			field[x][y].green=r1-strainGeneticsPowerMinor;
+			field[x][y].blue=r2-strainGeneticsPowerMinor;
+			field[x][y].exists=true;
 			break;
-		case 2:
-			return "green";
+		case "green":
+			field[x][y].red=r1-strainGeneticsPowerMinor;
+			field[x][y].green=v+strainGeneticsPowerMajor;
+			field[x][y].blue=r2-strainGeneticsPowerMinor;
+			field[x][y].exists=true;
 			break;
-		case 3:
-			return "blue";
-			break;
-		//
-		case 4:
-			return "red";
+		case "blue":
+			field[x][y].red=r1-strainGeneticsPowerMinor;
+			field[x][y].green=r2-strainGeneticsPowerMinor;
+			field[x][y].blue=v+strainGeneticsPowerMajor;
+			field[x][y].exists=true;
 			break;
 	}
-}
-function getRand(min, max) {
-	return Math.random() * (max - min) + min;
 }
