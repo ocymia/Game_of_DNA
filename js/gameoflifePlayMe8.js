@@ -51,24 +51,24 @@ switch (showOff){
 		break;
 	case 1:
 		//custom
-		var $_GET = $_GET();
+		//var $_GET = $_GET();
 		//TODO randChildren = $_GET['name'];
 		randChildren = 0;
-		strainGeneticsPowerMajor = $_GET['sMaj'];
-		strainGeneticsPowerMinor = $_GET['sMin'];
+		strainGeneticsPowerMajor = 200;
+		strainGeneticsPowerMinor = 200;
 		//console.log("Strain Power: " +strainGeneticsPowerMinor+"-"+strainGeneticsPowerMajor);
-		residue = $_GET['rVal'];
+		residue = 100;
 		//console.log("resiue " +residue);
-		opCell = $_GET['op'];
+		opCell = 0;
 		//console.log("opCell " +opCell);
-		minMutate = $_GET['minM'];
-		maxMutate = $_GET['maxM'];
+		minMutate = 200;
+		maxMutate = 250;
 		//console.log("mutate " +minMutate+"/"+maxMutate);
-		maturityAge = $_GET['mAge'];
+		maturityAge = 1;
 		//console.log("maturity age " +maturityAge);
-		delayCell = $_GET['delay'];
+		delayCell = 1;
 		//console.log("delayCell " +delayCell);
-		removeDead = $_GET['trail'];
+		removeDead = 1;
 		//console.log("removeDead " +removeDead);
 		break;
 	case 2:
@@ -523,7 +523,7 @@ function mutate(x,y){
 	var mutateValue = randomIntFromInterval(minMutate,maxMutate);
 	if (cR >= cB && cR >= cG){
 		// Red is strongest
-		field[x][y].red = field[x][y].red - mutateValue;
+		field[x][y].red = field[x][y].red + mutateValue;
 		if (cB>=cG){
 			//if blue is stronger then green then give to blue
 			//second strongest gene wins over weakest
@@ -534,7 +534,7 @@ function mutate(x,y){
 		}
 	} else if(cG >= cR && cG >= cB){
 		// Green is strongest
-		field[x][y].green = field[x][y].green - mutateValue;
+		field[x][y].green = field[x][y].green + mutateValue;
 		if (cB>=cG){
 			//blue is second
 			field[x][y].blue = field[x][y].blue + mutateValue;
@@ -544,7 +544,7 @@ function mutate(x,y){
 		}
 	} else {
 		// Blue ist strongest
-		field[x][y].blue = field[x][y].blue - mutateValue;
+		field[x][y].blue = field[x][y].blue + mutateValue;
 		if (cR>=cG){
 			//red is second
 			field[x][y].red = field[x][y].red + mutateValue;

@@ -8,23 +8,23 @@ var tempY;
 var aliveCounter;
 var theInterval;
 
-var showOff = 1;
+var showOff = 5;
 /**PARAMETERS*/
 //BOOL this makes children dna more random. strainGenetics act like min value, old value being the min
 var randChildren =0;
 //value added to main strain when child is created
-var strainGeneticsPowerMajor = 25;
+var strainGeneticsPowerMajor = 200;
 //value taken from secondary strains when child is created
-var strainGeneticsPowerMinor = 185;
+var strainGeneticsPowerMinor = 200;
 //once a cell becomes very strong it looses some of the weaker strains DNA value
 //var residue defines how many % will stay from the weaker strains
-var residue=12;
+var residue=100;
 //var opCell defines when a Cell is considered over powered
 //this will trigger over powered cells to be weakened - put it to 256 to disable
-var opCell=20;
+var opCell=0;
 //these define the minimum and maximum mutation vaues a cell can have when not moving
-var minMutate =151;
-var maxMutate =200;
+var minMutate =200;
+var maxMutate =250;
 //maturityAge is the age a cell must have to become an active adult
 var maturityAge=0;
 //var mode allows several modes influencing the op cells
@@ -33,14 +33,14 @@ var maturityAge=0;
 //mode 2 = setting dominant strain to residue
 //mode 3 = setting dominant strain to residue and delaying it by $delayCell
 //mode 4 = if a cell has values over $opCell in every strain, then modulo residue all of them
-var mode =4;
+var mode =0;
 //this is used for mode 3 to deayy op cells because they become slow
-var delayCell = 50;
+var delayCell = 1;
 //This defines the mating zone in which cellls can reproduce
 //The bigger the number -> the smaller the mating zone
 var matingZone = 1;
 //1 means no trail //0 = cells leave trail behind
-var removeDead =0;
+var removeDead =1;
 
 //if true = meltMode disable killing cells - effect makes RGB group with black border, but melts screen after some time
 var meltMode = true;
@@ -56,20 +56,20 @@ switch (showOff){
 		randChildren = 0;
 		strainGeneticsPowerMajor = $_GET['sMaj'];
 		strainGeneticsPowerMinor = $_GET['sMin'];
-		//console.log("Strain Power: " +strainGeneticsPowerMinor+"-"+strainGeneticsPowerMajor);
+		console.log("Strain Power: " +strainGeneticsPowerMinor+"-"+strainGeneticsPowerMajor);
 		residue = $_GET['rVal'];
-		//console.log("resiue " +residue);
+		console.log("resiue " +residue);
 		opCell = $_GET['op'];
-		//console.log("opCell " +opCell);
+		console.log("opCell " +opCell);
 		minMutate = $_GET['minM'];
 		maxMutate = $_GET['maxM'];
-		//console.log("mutate " +minMutate+"/"+maxMutate);
+		console.log("mutate " +minMutate+"/"+maxMutate);
 		maturityAge = $_GET['mAge'];
-		//console.log("maturity age " +maturityAge);
+		console.log("maturity age " +maturityAge);
 		delayCell = $_GET['delay'];
-		//console.log("delayCell " +delayCell);
+		console.log("delayCell " +delayCell);
 		removeDead = $_GET['trail'];
-		//console.log("removeDead " +removeDead);
+		console.log("removeDead " +removeDead);
 		break;
 	case 2:
 		//all life gets a chance // very diversified setting
@@ -96,14 +96,13 @@ switch (showOff){
 		minMutate=10;
 		maxMutate=200;
 		maturityAge=10;
-		mode=0;
+		mode=4;
 		delayCell=50;
 		//matingZone=1;
 		removeDead =0;
 		break;
 	case 4:
-		//no trails
-		randChildren =1;
+		randChildren =0;
 		strainGeneticsPowerMajor=150;
 		strainGeneticsPowerMinor=30;
 		residue=120;
@@ -113,7 +112,18 @@ switch (showOff){
 		maturityAge=getRand(1,100);
 		mode=4;
 		delayCell=getRand(1,100);
-		//matingZone=1;
+		removeDead =1;
+		break;
+	case 5:
+		randChildren =0;
+		strainGeneticsPowerMajor=200;
+		strainGeneticsPowerMinor=200;
+		residue=100;
+		opCell=0;
+		minMutate=200;
+		maxMutate=250;
+		maturityAge=1;
+		delayCell=1;
 		removeDead =1;
 		break;
 	default:
@@ -321,7 +331,6 @@ function updateTable(){
 				switch (d){
 					//down left
 					case 1:
-                        
 						//set target cell to current values and increment cycleCounter so it will not be targeted again this iteration
 						if (updateCellsNewHome(x-1,y+1,thisR,thisG,thisB,inc)) {
 							killCurrentCell (x,y);
@@ -639,8 +648,8 @@ function checkForPartnerCell (thisX,thisY){
 			}
 			//createChild(thisX-1,thisY-1,strainColor,mainStrain,rest1,rest2);
 			//creeate random direction
-            var rX =Math.floor(Math.random()*2);
-            var rY=Math.floor(Math.random()*2);
+            rX =Math.floor(Math.random()*2);
+            rY=Math.floor(Math.random()*2);
 			if (rX==2){
                 rX=thisX-1;
             }else if (rX==1){

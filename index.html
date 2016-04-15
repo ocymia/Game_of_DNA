@@ -27,39 +27,64 @@
 						<option value="2">Pulse</option>
 						<option value="5">An old one</option>
 						<option value="6">Battle of the Nations!</option>
+						<option value="7">Battle of the Nations2</option>
+						<option value="8">Greys?</option>
 					</select>
 
 					<button>...Presets GO...</button>
 				</form>
 
+				<!--<form id="custom" action="customGameOfLife.html" target="_blank">-->
+					<!--<fieldset>-->
+						<!--<legend>Custom Parameters:</legend>-->
+						<!--Random Cells:<br/>-->
+						<!--<input type="number" name="rndpoints" value="500"/><br>-->
+						<!--Cells Size:<br/>-->
+						<!--<input type="range" name="pixsize" id="range2input" min="4" max="15" value="10" step="1" oninput="showValue(this.value)" />-->
+						<!--<output id="range2">4</output><br/>-->
+
+						<!--Major Strain influence: <input type="number" size="30" name="sMaj"  value="200"><br>-->
+						<!--Minor Strain influence: <input type="number" size="30" name="sMin" value="200"><br>-->
+						<!--Residue Value: <input type="number" size="30" name="rVal" value="100"><br>-->
+						<!--Over Powered Trigger: <input type="number" size="30" name="op" value="0"><br>-->
+						<!--Minimum mutation value: <input type="number" size="30" name="minM" value="200"><br>-->
+						<!--Maximum mutation value:: <input type="number" size="30" name="maxM" value="250"><br>-->
+						<!--Maturity Age: <input type="number" size="30" name="mAge" value="1"><br>-->
+						<!--Take a break: <input type="number" size="30" name="delay" value="1"><br>-->
+						<!--Mating Zone: <input type="number" size="30" name="mZone"  value="200"><br>-->
+						<!--Cells can leave trails:-->
+						<!--<select name="trail">-->
+							<!--<option value="1">No trail</option>-->
+							<!--<option value="0">Trail visible</option>-->
+						<!--</select><br>-->
+
+						<!--&lt;!&ndash;showoff preset - 1 is custom&ndash;&gt;-->
+						<!--<input type="hidden" size="30" name="so" value="1"><br>-->
+
+						<!--<button>...Custom GO...</button>-->
+					<!--</fieldset>-->
+				<!--</form>-->
 				<form id="custom" action="customGameOfLife.html" target="_blank">
 					<fieldset>
-						<legend>Custom Parameters:</legend>
-						Random Cells:<br/>
-						<input type="number" name="rndpoints" value="120"/><br>
-						Cells Size:<br/>
-						<input type="range" name="pixsize" id="range2input" min="4" max="15" value="4" step="1" oninput="showValue(this.value)" />
-						<output id="range2">4</output><br/>
-
-						Major Strain influence: <input type="number" size="30" name="sMaj"><br>
-						Minor Strain influence: <input type="number" size="30" name="sMin"><br>
-						Residue Value: <input type="number" size="30" name="rVal"><br>
-						Over Powered Trigger: <input type="number" size="30" name="op"><br>
-						Minimum mutation value: <input type="number" size="30" name="minM"><br>
-						Maximum mutation value:: <input type="number" size="30" name="maxM"><br>
-						Maturity Age: <input type="number" size="30" name="mAge"><br>
-						Take a break: <input type="number" size="30" name="delay"><br>
-						Mating Zone: <input type="number" size="30" name="mZone"><br>
-						Cells can leave trails:
-								<select name="trail">
-									<option value="1">No trail</option>
-									<option value="0">Trail visible</option>
-								</select><br>
+						<legend>Very strange behaviour:</legend>
+						<input type="hidden" name="rndpoints" value="500"/>
+						<input type="hidden" name="pixsize" id="range2input" min="4" max="15" value="10" step="1" oninput="showValue(this.value)" />
+						<output id="range2"></output>
+						<input type="hidden" size="30" name="sMaj"  value="200">
+						<input type="hidden" size="30" name="sMin" value="200">
+						<input type="hidden" size="30" name="rVal" value="100">
+						<input type="hidden" size="30" name="op" value="0">
+						<input type="hidden" size="30" name="minM" value="200">
+						<input type="hidden" size="30" name="maxM" value="250">
+						<input type="hidden" size="30" name="mAge" value="1">
+						<input type="hidden" size="30" name="delay" value="1">
+						<input type="hidden" size="30" name="mZone"  value="200">
+						<input type="hidden" size="30" name="trail"  value="1">
 
 						<!--showoff preset - 1 is custom-->
 						<input type="hidden" size="30" name="so" value="1"><br>
 
-						<button>...Custom GO...</button>
+						<button>...Special treat GO...</button>
 					</fieldset>
 				</form>
 
@@ -69,6 +94,7 @@
 					<p>2 colours: 120 cells with size 4</p>
 					<p>1st try: 500 cells with size 5</p>
 					<p>Pulse: 2000 cells with size 10</p>
+					<p>Battle of the nations: 500+ cells with size that you pc can handle</p>
 				</div>
 			</div>
 			<footer id="footer">
@@ -78,10 +104,10 @@
 		<script>
 			function showValue(newValue){
 				document.getElementById("range").innerHTML=newValue;
-				document.getElementById("range2").innerHTML=newValue;
+				//document.getElementById("range2").innerHTML=newValue;
 			}
 			showValue(document.getElementById("rangeinput").value);
-			showValue(document.getElementById("range2input").value);
+			//showValue(document.getElementById("range2input").value);
 		</script>
 	</body>
 </html>

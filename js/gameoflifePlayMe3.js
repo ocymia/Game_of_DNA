@@ -136,10 +136,10 @@ function cycle(){
 	}
 	//stop if no cells alive
 	if (aliveCounter===0){clearInterval(theInterval);console.log("FINISH");}
-	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
+	//console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
-	console.timeEnd("cycle duration");
+	//console.timeEnd("cycle duration");
 }
 
 //function getRandomColor(){

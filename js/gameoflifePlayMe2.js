@@ -99,7 +99,7 @@ function startCycle(){
 }
 
 function cycle(){
-	console.time("cycle duration");
+	//console.time("cycle duration");
 
 	// calculate the lifecycle
 	/*for (var i=0; i<field.length; i++){
@@ -129,7 +129,7 @@ function cycle(){
 					field[i][j].green=0;
 					field[i][j].blue=0;
 					field[i][j].exists=false;
-					console.log("black cell killed");
+					//console.log("black cell killed");
 				}
 			}
 			//if values are to low then kill it
@@ -140,10 +140,10 @@ function cycle(){
 	}
 	//stop if no cells alive
 	if (aliveCounter===0){clearInterval(theInterval);console.log("FINISH");}
-	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
+	//console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
 	currentCycleCounter++;
 
-	console.timeEnd("cycle duration");
+	//console.timeEnd("cycle duration");
 }
 
 //function getRandomColor(){
@@ -298,19 +298,22 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		return false;
 	}
 }
-
-var backR = field[x+1][y+1].red;
-var backG = field[x+1][y+1].green;
-var backB = field[x+1][y+1].blue;
-
 //kill the object that was formerly occupied by a cell that just moved away
 function killCurrentCell (targetX,targetY){
-	field[targetX][targetY].red=backR;
-	field[targetX][targetY].green=backG;
-	field[targetX][targetY].blue=backB;
-	field[targetX][targetY].cycleCounter=null;
-	field[targetX][targetY].exists=false;
+	//console.log("kill"+targetX+"/"+targetY);
+
+
+			//field[targetX][targetY].red = 0;
+			//field[targetX][targetY].green = 0;
+			//field[targetX][targetY].blue = 0;
+		field[targetX][targetY].red =field[targetX][targetY].red - 100;
+		field[targetX][targetY].green =field[targetX][targetY].green - 100;
+		field[targetX][targetY].blue =field[targetX][targetY].blue -100;
+		field[targetX][targetY].cycleCounter = null;
+		field[targetX][targetY].exists = false;
+
 }
+
 
 //check if target is out of the visible field
 function notOutOfBoundsAndNotAlive (x,y,thisR,thisG,thisB,inc){
