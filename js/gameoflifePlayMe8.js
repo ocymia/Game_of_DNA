@@ -1,3 +1,4 @@
+//AUTHORS: JERRY KAPP, MAX GINTER, CLAUDE MARSON, MANUEL RILL
 /*jslint browser:true */
 //Custom playground
 "use strict";

@@ -1,3 +1,4 @@
+//AUTHORS: JERRY KAPP, MAX GINTER, CLAUDE MARSON, MANUEL RILL
 /*MAX'S PLAYGROUND****************************************************/
 /*jslint browser:true */
 
