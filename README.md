@@ -6,7 +6,7 @@
 Team Fatal Error:
 Jerry Kapp - Jerry_Kapp@hotmail.com
 Max Ginter - Max@Ginter-Wersant.lu
-Claude Marson - ClaudeMarson@hotmail.com
+Claude Marson
 Manuel Rill
 
 Thanks everyone, it was a really great experience!
