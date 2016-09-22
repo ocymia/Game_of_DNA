@@ -1,15 +1,16 @@
 /*jslint browser:true */
-
+// Claude
 "use strict";
 var canvas, context, height, width, pixelWidth, field, age;
 var currentCycleCounter=0;
 var tempX;
 var tempY;
 var aliveCounter;
-
+var theInterval;
 
 function init(){
-	pixelWidth = 5;
+	var parameters = location.search;
+	pixelWidth = +parameters.substring(parameters.indexOf("pixsize=")+"pixsize=".length, parameters.indexOf("&", parameters.indexOf("pixsize=")));
 	age = 1;
 	canvas = document.querySelector("canvas");
 	height = document.body.clientHeight;
@@ -25,12 +26,13 @@ function init(){
 				green: 0,
 				blue: 0,
 				cycleCounter: 0,
-				exists: false
+				exists: false,
+				direction: randDirection()
 			};
 		}
 	}
 	context = canvas.getContext("2d");
-	var numberOfPoitsToGenerate = +location.search.substring(location.search.indexOf("=")+1);
+	var numberOfPoitsToGenerate = +parameters.substring(parameters.indexOf("rndpoints=")+"rndpoints=".length, parameters.indexOf("&"));
 	generateRandomPoints(numberOfPoitsToGenerate);
 	canvas.addEventListener("mousedown", paint);
 	canvas.addEventListener("mousemove", paint);
@@ -39,6 +41,7 @@ function init(){
 
 
 function generateRandomPoints(numberOfPoints){
+	numberOfPoints = Math.min(numberOfPoints, field.length*field[0].length);
 	var i=1;
 	while (i<=numberOfPoints/3){
 		var randomX = Math.floor(Math.random()*field.length);
@@ -89,19 +92,11 @@ function paint(event){
 
 function startCycle(){
 	this.hidden = true;
-	setInterval(cycle, 100);
+	theInterval=setInterval(cycle, 100);
 }
 
 function cycle(){
 	console.time("cycle duration");
-
-	// calculate the lifecycle
-	/*for (var i=0; i<field.length; i++){
-	 for (var j=0; j<field[i].length; j++){
-	 //JERRY IS DOING THIS
-	 field[i][j].green+=10;
-	 }
-	 }*/
 
 	updateTable();
 
@@ -114,21 +109,29 @@ function cycle(){
 	for (var i=0; i<field.length; i++){
 		for (var j=0; j<field[i].length; j++){
 			//counting alive cells
-			if (field[i][j].exists) {aliveCounter++;}
+			if (field[i][j].exists) {
+				aliveCounter++;
+				checkForPartnerCell(i,j);
+				//killing cells that are nearly dead
+				if (field[i][j].red<10 && field[i][j].green<10 && field[i][j].blue<10){
+					field[i][j].red=0;
+					field[i][j].green=0;
+					field[i][j].blue=0;
+					field[i][j].exists=false;
+				}
+			}
+			//if values are to low then kill it
 
 			context.fillStyle = "rgb("+field[i][j].red+","+field[i][j].green+","+field[i][j].blue+")";
 			context.fillRect(i*pixelWidth, j*pixelWidth, pixelWidth, pixelWidth);
 		}
 	}
-	console.log("turn:"+currentCycleCounter+" Cells alive:"+aliveCounter);
+	//stop if no cells alive
+	if (aliveCounter===0){clearInterval(theInterval);}
 	currentCycleCounter++;
 
 	console.timeEnd("cycle duration");
 }
-
-//function getRandomColor(){
-//	return "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-//}
 
 init();
 
@@ -138,26 +141,21 @@ init();
 /* moving all cells and checking for trample instances  */
 function updateTable(){
 	/* Check all table */
-	//console.log("update table started");
 	for (var x=0;x<field.length;x++){
 		for (var y=0;y<field[0].length;y++) {
 			tempX=x;
 			tempY=y;
-			//console.log("checking x"+x+" y "+y);
 			// if current alive (exists) AND counter is equivalent to current turn then move the cell
-			if (field [x][y].exists===true && field[x][y].cycleCounter==currentCycleCounter) {
+			if (field [x][y].exists===true && field[x][y].cycleCounter===currentCycleCounter) {
 				//temp store values
-				//console.log("this cell is alive and its counter is "+field[x][y].cycleCounter);
 				var thisR =    field[x][y].red;
 				var thisG =    field[x][y].green;
 				var thisB =    field[x][y].blue;
 				//inc is the cycleCounterValue of the next iteration - to be used to set the cycleCounter for a moved cell in order to not move it again this turn
 				var inc = currentCycleCounter+1;
-				//determin direction in wich to move
-				var d = randDirection();
-				//console.log("cell x"+x+" y"+y);
+				//determin direction in wich to move and
 				//depending on direction do the move accordingly
-				switch (d){
+				switch (field[x][y].direction){
 					//down left
 					case 1:
 						//set target cell to current values and increment cycleCounter so it will not be targeted again this iteration
@@ -197,7 +195,6 @@ function updateTable(){
 					//this is still done to update and age cell
 						mutate(x,y);
 						field[x][y].cycleCounter=inc;
-						//console.log("mutated");
 						break;
 					//right
 					case 6:
@@ -271,10 +268,8 @@ function updateCellsNewHome (targetX,targetY,thisR,thisG,thisB,inc){
 		field[targetX][targetY].blue=thisB-age;
 		field[targetX][targetY].cycleCounter=inc;
 		field[targetX][targetY].exists=true;
-		//console.log("moving to x"+targetX+" y"+targetY);
 		return true;
 	} else {
-		//console.log("cant move");
 		return false;
 	}
 }
@@ -291,11 +286,8 @@ function killCurrentCell (targetX,targetY){
 
 //check if target is out of the visible field
 function notOutOfBoundsAndNotAlive (x,y,thisR,thisG,thisB,inc){
-
-	//console.log("target is x"+x+"/"+field.length+" and y"+y+"/"+field[0].length);
 	if (x<0 || y<0 || x>=field.length || y>=field[0].length){
 		//target cell is out the bounds
-		//console.log("out of bounds");
 		return 0;
 	} else {
 		//target cell is in the bounds
@@ -315,8 +307,6 @@ function notAlive (x,y,thisR,thisG,thisB,inc){
 		//its false target is alive
 		//TODO MUTATE!!! -> set also the cycleCounter of the mutated cell to next because we dont want it to move this turn
 		fusion (x,y,thisR,thisG,thisB,inc);
-		//
-		//console.log("target cell is alive - should mutate");
 		return false;
 	}
 }
@@ -342,24 +332,6 @@ function fusion(x,y,thisR,thisG,thisB,inc){
 	field[x][y].cycleCounter=inc;
 	//kill old cell
 	killCurrentCell(tempX,tempY);
-}
-
-function procreate (targetX,targetY,thisR,thisG,thisB,inc){
-	var lastR=thisR;
-	var lastG=thisG;
-	var lastB=thisB;
-	var targetR=field[x][y].red;
-	var targetG=field[x][y].green;
-	var targetB=field[x][y].blue;
-	//take rgb of entering cell
-
-	//take rgb of existing cell
-
-
-	//create new cell with properties of both
-
-	//kill old cell
-
 }
 
 function mutate(x,y){
@@ -403,5 +375,208 @@ function mutate(x,y){
 			field[x][y].green = field[x][y].green + mutateValue;
 		}
 
+	}
+}
+
+function checkForPartnerCell (thisX,thisY){
+	if (thisX === 0 || thisY === 0){
+		//cell is on some north or west border, its to cold to reproduce here ;)
+	}else{
+		//get these rgb (of the cell that will mate with partner cell
+		var tR=field[thisX][thisY].red;
+		var tG=field[thisX][thisY].green;
+		var tB=field[thisX][thisY].blue;
+
+		if(thisX-1>=0 && field[thisX-1][thisY].exists){
+			//left has partner
+			//get partner rgb
+			var pR=field[thisX-1][thisY].red;
+			var pG=field[thisX-1][thisY].green;
+			var pB=field[thisX-1][thisY].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+		}else if (thisY-1>=0 && field[thisX][thisY-1].exists){
+			//partner top
+			//get partner rgb
+			var pR=field[thisX][thisY-1].red;
+			var pG=field[thisX][thisY-1].green;
+			var pB=field[thisX][thisY-1].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+		}else if (thisX+1<field.length && field[thisX+1][thisY].exists){
+			//partner top
+			//get partner rgb
+			var pR=field[thisX+1][thisY].red;
+			var pG=field[thisX+1][thisY].green;
+			var pB=field[thisX+1][thisY].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+		}else if (thisY+1<field[0].length && field[thisX][thisY+1].exists){
+			//partner top
+			//get partner rgb
+			var pR=field[thisX][thisY+1].red;
+			var pG=field[thisX][thisY+1].green;
+			var pB=field[thisX][thisY+1].blue;
+
+			//define strongest score values
+			var strongestRed,strongestGreen,strongestBlue;
+			if (pR>=tR){strongestRed = pR;}else{strongestRed = tR;}
+			if (pG>=tG){strongestGreen = pG;}else{strongestGreen = tG;}
+			if (pB>=tB){strongestBlue = pB;}else{strongestBlue = tB;}
+			//now the strongest of the three will be the main strain passed on to the child
+			var mainStrain,strainColor,rest1,rest2;
+			if (strongestRed>=strongestGreen&&strongestRed>=strongestBlue){
+				mainStrain=strongestRed;
+				strainColor="red";
+				//determin others rest 1 and 2 are always the in order RGB - the strainColor
+				rest1=strongestGreen;
+				rest2=strongestBlue;
+			} else if (strongestGreen>=strongestRed&&strongestGreen>=strongestBlue){
+				mainStrain=strongestGreen;
+				strainColor="green";
+				rest1=strongestRed;
+				rest2=strongestBlue;
+			} else {
+				mainStrain=strongestBlue;
+				strainColor="blue";
+				rest1=strongestRed;
+				rest2=strongestGreen;
+			}
+		}
+		switch(field[thisX][thisY].direction){
+			//down left
+			case 1:
+				createChild(thisX-1, thisY+1, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//down
+			case 2:
+				createChild(thisX, thisY+1, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//down right
+			case 3:
+				createChild(thisX+1, thisY+1, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//left
+			case 4:
+				createChild(thisX-1, thisY, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//stay
+			case 5:
+				break;
+			//right
+			case 6:
+				createChild(thisX+1, thisY, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//up left
+			case 7:
+				createChild(thisX-1, thisY-1, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//up
+			case 8:
+				createChild(thisX, thisY-1, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+			//up right
+			case 9:
+				createChild(thisX+1, thisY-1, strainColor, mainStrain, rest1, rest2, field[thisX][thisY].direction);
+				break;
+		}
+	}
+}
+
+function createChild (x,y,c,v,r1,r2,d){
+	if (x>=0 && x<field.length && y>=0 && y<field[0].length){
+		//strongest strain gets stronger on the expense of weaker ones
+		switch (c){
+			case "red":
+				field[x][y].red=v+50;
+				field[x][y].green=r1-25;
+				field[x][y].blue=r2-25;
+				field[x][y].exists=true;
+				field[x][y].direction=d;
+				break;
+			case "green":
+				field[x][y].red=r1-25;
+				field[x][y].green=v+50;
+				field[x][y].blue=r2-25;
+				field[x][y].exists=true;
+				field[x][y].direction=d;
+				break;
+			case "blue":
+				field[x][y].red=r1-25;
+				field[x][y].green=r1-25;
+				field[x][y].blue=v+50;
+				field[x][y].exists=true;
+				field[x][y].direction=d;
+				break;
+		}
 	}
 }

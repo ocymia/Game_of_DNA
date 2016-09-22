@@ -1,26 +1,114 @@
+<!--AUTHORS: JERRY KAPP, MAX GINTER, CLAUDE MARSON, MANUEL RILL-->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title>FATAL ERROR</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-</head>
-<body>
-    <div id="header">
-        <h1><a href="index.html">GameOfD.N.A.</a></h1>
-        <nav>
-            <a href="#menu">Menu</a>
-        </nav>
-    </div>
-    <div id="content">
-        <form action="gameoflife.html" target="_blank">
-            Random Cells:<br>
-            <input type="number" name="rndpoints" value="500"><br>
-            <button>...GO...</button>
-        </form>
-    </div>
-    <div id="footer">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Game Of D.N.A.</title>
+		<link rel="stylesheet" href="assets/css/style.css"/>
+	</head>
+	<body id="body">
+		<div id="page-wrapper">
+			<header id="header" class="alt">
+				<h1>Game Of D.N.A.</h1>
+			</header>
+			<div id="content">
+				<form class="options" action="gameoflife.html" target="_blank">
+					Random Cells:<br/>
+					<input type="number" name="rndpoints" value="120"/><br>
+					
+					Cells Size:<br/>
+					<input type="range" name="pixsize" id="rangeinput" min="3" max="10" value="4" step="1" oninput="showValue(this.value)" />
+					<output id="range">4</output><br/>
 
-    </div>
-</body>
+					Presets:
+					<select name="selscript">
+                        <option value="1">Tower Structures</option>
+						<option value="4">2 colours</option>
+						<option value="3">1st try</option>
+						<option value="2">Pulse</option>
+						<option value="5">An old one</option>
+						<option value="6">Battle of the Nations!</option>
+						<option value="7">Battle of the Nations2</option>
+						<option value="8">Greys?</option>
+					</select>
+
+					<button>...Presets GO...</button>
+				</form>
+
+				<!--<form id="custom" action="customGameOfLife.html" target="_blank">-->
+					<!--<fieldset>-->
+						<!--<legend>Custom Parameters:</legend>-->
+						<!--Random Cells:<br/>-->
+						<!--<input type="number" name="rndpoints" value="500"/><br>-->
+						<!--Cells Size:<br/>-->
+						<!--<input type="range" name="pixsize" id="range2input" min="4" max="15" value="10" step="1" oninput="showValue(this.value)" />-->
+						<!--<output id="range2">4</output><br/>-->
+
+						<!--Major Strain influence: <input type="number" size="30" name="sMaj"  value="200"><br>-->
+						<!--Minor Strain influence: <input type="number" size="30" name="sMin" value="200"><br>-->
+						<!--Residue Value: <input type="number" size="30" name="rVal" value="100"><br>-->
+						<!--Over Powered Trigger: <input type="number" size="30" name="op" value="0"><br>-->
+						<!--Minimum mutation value: <input type="number" size="30" name="minM" value="200"><br>-->
+						<!--Maximum mutation value:: <input type="number" size="30" name="maxM" value="250"><br>-->
+						<!--Maturity Age: <input type="number" size="30" name="mAge" value="1"><br>-->
+						<!--Take a break: <input type="number" size="30" name="delay" value="1"><br>-->
+						<!--Mating Zone: <input type="number" size="30" name="mZone"  value="200"><br>-->
+						<!--Cells can leave trails:-->
+						<!--<select name="trail">-->
+							<!--<option value="1">No trail</option>-->
+							<!--<option value="0">Trail visible</option>-->
+						<!--</select><br>-->
+
+						<!--&lt;!&ndash;showoff preset - 1 is custom&ndash;&gt;-->
+						<!--<input type="hidden" size="30" name="so" value="1"><br>-->
+
+						<!--<button>...Custom GO...</button>-->
+					<!--</fieldset>-->
+				<!--</form>-->
+				<form id="custom" action="customGameOfLife.html" target="_blank">
+					<fieldset>
+						<legend>Very strange behaviour:</legend>
+						<input type="hidden" name="rndpoints" value="500"/>
+						<input type="hidden" name="pixsize" id="range2input" min="4" max="15" value="10" step="1" oninput="showValue(this.value)" />
+						<output id="range2"></output>
+						<input type="hidden" size="30" name="sMaj"  value="200">
+						<input type="hidden" size="30" name="sMin" value="200">
+						<input type="hidden" size="30" name="rVal" value="100">
+						<input type="hidden" size="30" name="op" value="0">
+						<input type="hidden" size="30" name="minM" value="200">
+						<input type="hidden" size="30" name="maxM" value="250">
+						<input type="hidden" size="30" name="mAge" value="1">
+						<input type="hidden" size="30" name="delay" value="1">
+						<input type="hidden" size="30" name="mZone"  value="200">
+						<input type="hidden" size="30" name="trail"  value="1">
+
+						<!--showoff preset - 1 is custom-->
+						<input type="hidden" size="30" name="so" value="1"><br>
+
+						<button>...Special treat GO...</button>
+					</fieldset>
+				</form>
+
+				<div class="options">
+					<h3>Recommended settings</h3>
+					<p>3 colours: 120 cells with size 4</p>
+					<p>2 colours: 120 cells with size 4</p>
+					<p>1st try: 500 cells with size 5</p>
+					<p>Pulse: 2000 cells with size 10</p>
+					<p>Battle of the nations: 500+ cells with size that you pc can handle</p>
+				</div>
+			</div>
+			<footer id="footer">
+				<p>Created by: Jerry Kapp, Claude Marson, Max Ginter, Manuel Rill</p>
+			</footer>
+		</div>
+		<script>
+			function showValue(newValue){
+				document.getElementById("range").innerHTML=newValue;
+				//document.getElementById("range2").innerHTML=newValue;
+			}
+			showValue(document.getElementById("rangeinput").value);
+			//showValue(document.getElementById("range2input").value);
+		</script>
+	</body>
 </html>
